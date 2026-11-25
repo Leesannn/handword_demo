@@ -66,11 +66,13 @@
 | lesson_ended | source, lesson_id, word, total_attempts, success_count |
 | answer_selected | source, reading_id, predicted_word, selected_word, was_corrected, confidence, probabilities, 선택적 sample_id |
 
-`recognition_result`에는 판정 상황에 따라 `is_correct`, `predicted_word`, `confidence`, `target_probability`, `probabilities`, `duration_ms`, `hand_missing_ratio`, `reading_id`, `sample_id`가 포함됩니다. 필드가 생략되는 경우를 지원해야 합니다.
+`recognition_result`에는 판정 상황에 따라 `is_correct`, `predicted_word`, `confidence`, `target_probability`, `probabilities`, `duration_ms`, `hand_missing_ratio`, `reading_id`, `sample_id`가 포함됩니다. 각 필드는 판정 상황에 따른 선택 필드로 정의돼 있습니다.
 
 규격서의 허용 필드와 실제 API 모델이 함께 관리돼야 합니다. 제공 문서에서 사용하지 않는 필드를 붙여 HTTP 400이 발생했던 사례가 보고됐습니다.
 
 ## 통계의 분모
+
+서버 담당 보고의 통계는 1분 단어별 연습 횟수, 최근 5분 미인식 비율, 사용자 확인 일치율입니다. 다음 표는 앱 규격에 정의된 각 지표의 원천과 분모를 설명합니다.
 
 | 지표 | 기준 |
 |---|---|
@@ -79,7 +81,9 @@
 | 미인식 비율 | recognition_result 중 unsure·unknown·hands_unseen·no_hands·too_short 비율 |
 | 사용자 확인 일치율 | answer_selected 중 was_corrected=false 비율 |
 
-`wrong_word`는 목표와 다른 단어로 판정한 결과입니다. 앱 규격상 미인식 분자에는 포함하지 않습니다. `read`는 번역 모드의 읽기 성공 결과입니다. 사용자 확인 일치율은 모델의 독립 평가 정확도와 구분해 해석합니다. 위 표는 앱 규격서의 정의이며, 서버 집계 코드와의 최종 대조가 필요합니다.
+`wrong_word`는 목표와 다른 단어로 판정한 결과입니다. 앱 규격상 미인식 분자에는 포함하지 않습니다. `read`는 번역 모드의 읽기 성공 결과입니다. 사용자 확인 일치율은 모델의 독립 평가 정확도와 구분해 해석합니다. 위 표의 정의는 제공 앱 규격서에 근거합니다.
+
+번역 인식 결과와 사용자 선택은 reading_id로 연결합니다. [Kafka·Spark 처리 내용](streaming-semantics.md)
 
 ## 실제 원장 저장
 
@@ -113,19 +117,4 @@
 
 ## 기기 구분
 
-직접 조회에서는 아이폰 `device=iPhone19,7`, `app_version=1.0`과 Android `device=android-16`, `app_version=1.0-expo`를 확인했습니다. Android 값만으로 제조사·갤럭시 모델까지 확정할 수 없습니다. 사용자 ID는 앱 인스턴스 구분의 근거이고, 재설치·저장 데이터 초기화에 대한 지속성은 별도 확인 항목입니다.
-
-## 좌표 샘플 경로
-
-학습 기록과 별도인 `POST /v1/samples`로 한 건씩 전송하는 계약입니다. 서버 담당 보고에는 API와 동일 ID 갱신 로직 구현, 로컬 테스트 18개 통과가 포함됩니다. 비공개 S3와 실제 모바일 업로드를 잇는 검증은 남아 있습니다. Android 제공 소스는 샘플 업로드 후속 구현이 필요하다고 명시합니다.
-
-| 구분 | 주요 데이터 |
-|---|---|
-| 좌표 본문 | frames, times, start, end, aspect |
-| 식별·학습 | id, label, feedback, person, model |
-| 판정 | predicted, classes, probabilities, outcome |
-| 생성 조건 | created, preprocess_version, mode, camera, device, app_version, source |
-
-계획은 비공개 S3의 ID별 파일과 MongoDB 메타데이터를 연결하는 것입니다. 같은 샘플 ID의 갱신, 두 저장소의 부분 실패, 삭제 요청은 별도 시험해야 합니다. 이벤트 원장의 동일 ID 원문 보존 정책과 샘플의 수정 정책은 각각의 데이터 목적에 맞게 구현합니다.
-
-따라 하기의 label은 사용자가 연습하려던 단어입니다. 검수 후 학습 정답으로 사용할지를 결정합니다. 앱 README의 동의 후 자동 수집 설명과 초기 선택적 동의 설계 사이에 차이가 있어, 실제 동의 화면·번역 샘플 수집 범위·삭제 절차를 팀에서 확정해야 합니다.
+직접 조회에서는 아이폰 `device=iPhone19,7`, `app_version=1.0`과 Android `device=android-16`, `app_version=1.0-expo`를 확인했습니다. Android 값만으로 제조사·갤럭시 모델까지 확정할 수 없습니다. 사용자 ID는 앱 인스턴스를 구분하는 식별자로 사용했습니다.

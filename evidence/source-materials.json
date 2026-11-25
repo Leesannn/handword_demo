@@ -1,6 +1,13 @@
 {
   "documentation_date": "2026-11-25",
   "scope": "Supplied team source materials used for documentation",
+  "documentation_revision": "v5-implemented-team-work",
+  "additional_requirement_source": {
+    "type": "user-provided instructor assignment text",
+    "date": "2026-11-25",
+    "topic": "실시간 로그 통합 파이프라인",
+    "evidence_status": "Used to organize completed team work; implementation evidence is recorded separately."
+  },
   "files": [
     {
       "name": "aws-deployment-and-data-pipeline.md",
