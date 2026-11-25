@@ -22,7 +22,13 @@
     {
       "name": "수어칠판_안드로이드앱.zip",
       "bytes": 15997854,
-      "sha256": "87108b6b04d9cd6423bd47169a76e598d8e8dff8b1016170e3ea6d172fbe22bc"
+      "sha256": "87108b6b04d9cd6423bd47169a76e598d8e8dff8b1016170e3ea6d172fbe22bc",
+      "revised": {
+        "date": "2026-11-25",
+        "bytes": 15995184,
+        "sha256": "894d007ee4ed4282bbe64a975c4775c70881d9854546f85071af890400932c5d",
+        "change": "Removed local self-signed test certificate and private key (web/dist/local-key.pem, local-cert.pem). No other file changed."
+      }
     }
   ],
   "note": "Original archives, model assets, credentials and raw coordinate data are excluded from this documentation bundle."
