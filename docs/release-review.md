@@ -1,4 +1,4 @@
-# 1차 게시 검토와 근거 목록
+# 게시 범위와 자료 출처
 
 이 패키지는 GitHub 게시용 문서 초안입니다. 앱·서버 원본 소스의 병합, GitHub 업로드, 새 공개 라이선스 부여는 별도 단계입니다. 팀 개인 확장 프로젝트의 자료는 포함하지 않았습니다.
 
@@ -29,10 +29,21 @@
 README.md
 docs/
   architecture.md
+  app-engine.md
   data-contract.md
+  data-model.md
+  data-flow.md
+  reliability-and-optimization.md
+  design-decisions.md
+  operations.md
   verification.md
   presentation.md
   release-review.md
+evidence/
+  README.md
+  android-engine-reference.json
+  mongodb-index-and-exceptions.json
+  source-materials.json
 mobile/
   ios-board/             SwiftUI 화면·Sync
   ios/KSLSign/           ios-board가 참조하는 공통 엔진
@@ -41,11 +52,11 @@ server/                 서버 담당자의 실제 API·Kafka·Spark 소스
 database/               검토한 DB 인덱스·점검 스크립트
 ```
 
-현재 문서 패키지에는 README와 docs만 들어 있습니다. 서버는 설명 MD만 제공돼 실행 코드와 Docker Compose를 임의로 생성하지 않았습니다. 빌드 산출물·모델·AIHub 리소스의 공개 범위는 위 검토 결과에 따라 결정합니다.
+현재 게시 묶음은 README, docs, 비밀값·사용자 원문을 제외한 evidence 결과 파일로 구성됩니다. 서버는 설명 MD만 제공됐으므로 실행 코드와 Docker Compose는 이 문서 묶음에 포함하지 않습니다. 빌드 산출물·모델·AIHub 자산의 공개 범위는 위 조건을 따릅니다.
 
-## 담당자 최종 확인 항목
+## 자료가 뒷받침하는 범위
 
-| 항목 | 현재 판단 | 요청할 확인 |
+| 항목 | 현재 근거 | 자료로 확정하지 않은 사항 |
 |---|---|---|
 | 팀 소개 | 역할 단위 기여 정리 | 이름·프로필·기간·모델 학습 담당 |
 | 앱 실제 구현 | 제공 Swift·JS와 문서 확인 | 마지막 커밋, 현재 빌드, 최신 BaseURL 반영 |
@@ -68,8 +79,9 @@ database/               검토한 DB 인덱스·점검 스크립트
 | 11월23일 DB 진단·인덱스 적용 결과 | 73→10 문서 검사, 원문 비교, 임시 예외 시험 | 실제 AWS에서 에이전트 실행 |
 | 11월23~25일 MongoDB 조회 결과 | 이벤트 ID·오프셋·수신 시각·device | 실제 AWS에서 에이전트 실행 |
 | 앱 담당자 전송 목록 | 개별 이벤트 대조 | 제공 목록과 DB 직접 대조 |
+| 제공 Android 엔진·단일 fixture | 전처리·확률·감사 판정 | 11월25일 Node.js에서 직접 재검증 |
 
-기존 진단 결과는 사용자 PC의 임시 폴더에 저장됐던 실행 결과를 근거로 대화에서 확인했습니다. 이 초안에는 실제 사용자 ID·원문 묶음을 다시 포함하지 않았습니다. 장기 보관용 증빙을 공개하려면 필요한 필드만 비식별화한 별도 결과를 팀에서 확정합니다.
+기존 DB 진단 도구가 저장한 결과 파일에서 인증정보·사용자 원문이 없는 인덱스·예외 시험 결과를 evidence에 보관했습니다. Android는 제공 파일 해시와 계산 오차를 보관했습니다. 원본 ZIP·서버 문서의 해시는 source-materials.json에 기록합니다. 이 값은 자료 식별용이며 현재 배포 버전과 같다는 보장은 아닙니다.
 
 ## 참고 저장소 반영
 

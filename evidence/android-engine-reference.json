@@ -1,0 +1,33 @@
+{
+  "scope": "Supplied Android JavaScript engine against supplied reference fixture",
+  "executed_at_utc": "2026-11-25T02:31:13.944Z",
+  "runtime": "v24.22.3",
+  "source_files": [
+    {
+      "name": "core.js",
+      "sha256": "9915568253d79c87cf7804689b065159c715d5e6231fe69850a72e0f1402704b"
+    },
+    {
+      "name": "fixture.json",
+      "sha256": "a3ac94e6d0606c2024c5e0a9a036b1c55fbeb3a338a8cc7a4e4745934e8fdd90"
+    },
+    {
+      "name": "model.json",
+      "sha256": "70070bf9ff63977b125bc1e74a0ba120eb45d893e3ecac38772a93b03db99883"
+    }
+  ],
+  "fixture_count": 1,
+  "preprocessed_values": 5310,
+  "preprocessing_max_abs_error": 2.384185791015625e-7,
+  "preprocessing_tolerance": 0.00001,
+  "probability_max_abs_error": 7.644642940896063e-8,
+  "probability_tolerance": 0.0001,
+  "predicted_word": "감사",
+  "expected_word": "감사",
+  "passed": true,
+  "limitations": [
+    "Single bundled fixture",
+    "No device, camera, network or iOS execution",
+    "No independent model accuracy evaluation"
+  ]
+}

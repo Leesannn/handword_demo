@@ -1,0 +1,22 @@
+{
+  "documentation_date": "2026-11-25",
+  "scope": "Supplied team source materials used for documentation",
+  "files": [
+    {
+      "name": "aws-deployment-and-data-pipeline.md",
+      "bytes": 4184,
+      "sha256": "c4c77a0f4852ed87eff08d3f8a9ad49cbe2c7961df3d4e629e34204a3e118129"
+    },
+    {
+      "name": "수어칠판_아이폰앱.zip",
+      "bytes": 25204404,
+      "sha256": "3b2484a3b75952f5ffcc7bbba889712fd34dfeaf09f16f3399e4bd64a12ef185"
+    },
+    {
+      "name": "수어칠판_안드로이드앱.zip",
+      "bytes": 15997854,
+      "sha256": "87108b6b04d9cd6423bd47169a76e598d8e8dff8b1016170e3ea6d172fbe22bc"
+    }
+  ],
+  "note": "Original archives, model assets, credentials and raw coordinate data are excluded from this documentation bundle."
+}
