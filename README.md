@@ -4,7 +4,7 @@
 
 카메라로 수어 단어를 읽고, 본보기 동작을 따라 연습하며, 학습 기록을 AWS에 수집하는 모바일 팀 프로젝트입니다. iOS와 Android에서 동작 좌표를 추출하고 기기에서 단어를 판정합니다. 서버는 학습 이벤트를 Kafka와 Spark로 처리해 MongoDB 원장과 통계로 보관합니다.
 
-**팀 프로젝트 통합 기술·소스 패키지 v6 · 2026-11-26**
+**팀 프로젝트 기술 문서 v7 · 지연 이벤트·장애 복구 검증 보강 · 2026-11-26**
 
 MediaPipe 좌표 추출·품질 검사와 kNN 학습 실험에서 시작해, 영상 비동기 작업·Kafka·Spark 검사를 거쳐 실제 모바일 학습 이벤트를 AWS MongoDB까지 연결했습니다. 개발 과정의 소스, 현재 앱·서버 구조, 실행 근거를 하나의 저장소에서 추적할 수 있도록 구성했습니다.
 
@@ -20,7 +20,7 @@ MediaPipe 좌표 추출·품질 검사와 kNN 학습 실험에서 시작해, 영
 
 핵심 결과는 124시퀀스의 고정 분할 학습·평가, 영상 작업 API 12개·단어 회귀 18개 검사, 두 아이폰 이벤트 17건 저장, MongoDB 검사 문서 73→10, 모바일 엔진 기준 계산 일치입니다. 직접 실행·저장된 과거 결과·담당자 보고를 구분해 [검증 결과](docs/verification.md)와 [측정 근거](evidence/README.md)에 연결했습니다.
 
-기준 저장소는 [팀원 PR #1·#2가 병합된 main](https://github.com/Shinkyeongho/handword_demo/tree/563dea74fdc3cfd60244da472bdeae4a5f6b58fa)입니다. 앱 담당자의 실기기 확인과 서버 담당자의 README 정리 내용을 유지했습니다.
+이번 README의 기준은 [소스 통합 커밋 41491b6](https://github.com/Shinkyeongho/handword_demo/tree/41491b63fd5b5ee9335bb2b06be53f12a3405990)입니다. 팀원 PR #1·#2의 앱 확인 내용과 README 수정사항을 유지하고 지연 이벤트·장애 복구의 검증 근거를 보강했습니다.
 
 ## 목차
 
@@ -32,9 +32,11 @@ MediaPipe 좌표 추출·품질 검사와 kNN 학습 실험에서 시작해, 영
 - [MediaPipe 개발과 모델 실험](#mediapipe-개발과-모델-실험)
 - [모델과 좌표 처리](#모델과-좌표-처리)
 - [학습 이벤트 수집](#학습-이벤트-수집)
+- [지연 이벤트와 재전송](#지연-이벤트와-재전송)
 - [MongoDB 저장과 최적화](#mongodb-저장과-최적화)
 - [데이터 모델과 ERD](#데이터-모델과-erd)
 - [비동기 작업·복구 검증](#비동기-작업복구-검증)
+- [장애 복구와 체크포인트 검증](#장애-복구와-체크포인트-검증)
 - [예외 처리와 운영 개선](#예외-처리와-운영-개선)
 - [검증 결과](#검증-결과)
 - [역할과 협업](#역할과-협업)
@@ -207,6 +209,48 @@ flowchart LR
 
 [이벤트 계약과 저장 구조](docs/data-contract.md)
 
+## 지연 이벤트와 재전송
+
+모바일에서는 이벤트가 발생한 시각과 서버가 받은 시각이 다를 수 있습니다. 팀은 기록을 먼저 Outbox에 보관하고, 재전송에서도 같은 event_id와 발생 시각을 유지했습니다. API는 전송·수신 시각을 함께 보존해 뒤늦게 도착한 기록을 원장에서 대조할 수 있게 했습니다.
+
+| 구분 | 필드 | 사용 목적 |
+|---|---|---|
+| 앱 동작 발생 | event_time | 실제 학습 행동이 일어난 시각 |
+| 배치 전송 | sent_at | 앱이 기록 묶음을 보낸 시각 |
+| 서버 수신 | received_at | API가 기록 묶음을 받은 시각 |
+| 재전송 식별 | event_id | 이미 보낸 기록과 새 기록 구분 |
+
+### 실제 아이폰의 지연 도착 대조
+
+2026년 11월 25일, 폰에 대기 중이던 기록 9건이 고정 주소 빌드 설치 후 전송됐습니다. 앱 담당자의 전송 로그와 DB 담당자의 원장 조회를 연결했습니다. 아래 시각은 한국 시간입니다.
+
+| 관측 항목 | 실제 확인 내용 |
+|---|---|
+| 기록 발생 시각 | 09:06~09:07 |
+| 서버 수신 시각 | 09:13:01 |
+| 앱 전송 기록 | 순번 164~172의 9건, 모두 HTTP 202 |
+| MongoDB 대조 | 오프셋 578~586의 9건 저장 |
+| 이어진 학습 | 09:14에 감사 학습 8건 전송·모두 202, 원장 587~594와 연결 |
+
+```mermaid
+sequenceDiagram
+    participant User as 학습 동작
+    participant Queue as 아이폰 Outbox
+    participant API as 이벤트 API
+    participant DB as MongoDB 원장
+    User->>Queue: 09:06~09:07 발생 기록 보관
+    Note over Queue: event_id·event_time 유지
+    Queue->>API: 09:13 기록 9건 전송
+    API->>API: received_at 09:13:01 기록
+    API-->>Queue: HTTP 202
+    API->>DB: Kafka·Spark를 통한 비동기 저장
+    Note over DB: 오프셋 578~586의 9건 대조
+```
+
+이 사례는 발생 후 수분 뒤 도착한 이벤트의 전송·원장 저장을 확인한 결과입니다. 발생→수신 시각 차이에는 폰의 대기 시간이 포함되므로 Spark 처리 지연이나 DB 쓰기 시간으로 환산하지 않습니다. 지연 도착 기록의 적재 대조와 시간 창 통계의 계산 의미를 구분해 제시합니다.
+
+[앱 전송 확인](docs/app-status.md#실제-폰-전송과-원장-연결) · [DB 관측 기록](docs/verification.md#실제-aws-mongodb-대조) · [시각 필드 계약](docs/data-contract.md#식별자와-시각)
+
 ## MongoDB 저장과 최적화
 
 실제 이벤트 원장 `learning_attempt_test_app_events`의 구조는 다음과 같습니다.
@@ -274,6 +318,43 @@ Spark 시제품은 foreachBatch에서 이벤트의 종류·버전·필수 ID를 
 이 실습의 녹화·영상 업로드는 개발 검사용 경로입니다. 현재 모바일 앱은 기기 내 추론 후 학습 로그를 전송합니다.
 
 [Kafka·Spark·작업 상태·복구 상세](docs/prototype-pipeline.md) · [실행 결과 요약](evidence/pipeline-regression.json)
+
+## 장애 복구와 체크포인트 검증
+
+장애 복구는 작업 API·워커·Kafka·Spark·원장을 나누어 확인했습니다. 영상 작업 실습에서는 한 구성 요소를 중단해도 다른 단계가 진행되는지 관측하고, 재개 후 기존 기록과 새 기록을 대조했습니다. 실제 모바일 서버의 재기동·누락 복구는 서버 담당자의 별도 보고로 연결합니다.
+
+### 영상 작업 실습의 중단·재개
+
+| 단계 | 중단 중 관측 | 재개 후 확인 |
+|---|---|---|
+| 워커 중단 | API 접수·요청 발행 성공, 5초간 queued·추론 0회 | 같은 작업 ID로 완료, Kafka 결과 발행·Spark 반영 |
+| 같은 요청 재전송 | client_request_id로 기존 작업 조회 | 작업 ID·결과·추론 1회 유지 |
+| Spark 중단 | API·워커·Kafka 결과 발행 성공, 5초간 기존 통계 유지 | 중단 중 쌓인 작업 1건을 원장·누적·1분 창·완료 통계에 반영 |
+| 같은 체크포인트 재개 | 기존 원장·fingerprint·시각·checkpoint 상태를 기준으로 보존 | 기존 기록 유지, 완료 이벤트 3회 재전달 후 통계 유지 |
+
+검사 기록은 queue-worker → finish-worker → queue-spark → finish-spark의 네 단계로 구성되며, 단계별 확인 항목은 3개입니다. 표의 5초는 **중단 상태의 관측 시간**입니다. 복구 완료 시간이나 지연 보장값을 뜻하지 않습니다.
+
+### 복구를 뒷받침하는 구현
+
+- **작업 멱등 키:** client_request_id 고유 인덱스와 입력 fingerprint로 정상 재요청을 기존 작업에 연결합니다.
+- **원장 고유성:** event_id 기반 _id와 sequence_id 고유 인덱스, 내용 fingerprint를 사용합니다.
+- **멱등 집계 출력:** 원장의 고유 이벤트로 통계 절대값을 재계산하고 ReplaceOne(upsert=True)·bulk_write로 갱신합니다.
+- **소비 위치 복구:** Spark checkpointLocation을 유지하고 broker·prefix·database 바인딩을 검사합니다.
+- **전후 대조:** 원장 건수만이 아니라 기존 원문의 fingerprint·기록 시각과 단어별 누적·1분 창·상태 통계를 비교합니다.
+
+이 구현과 복구 결과는 로컬 단일 워커 기반 영상 실습의 검증 범위입니다. 워커 대기·재개와 Spark 소비 재시작을 각각 나눠 확인했습니다.
+
+### 실제 모바일 서버의 복구 보고
+
+| 운영 시나리오 | 보고된 결과 | 근거 |
+|---|---|---|
+| 누락 범위 재처리 | Kafka 437~440의 4건을 별도 Spark 배치로 복구, 기존 24건을 포함한 총 28건 대조 | 서버 담당 제공 보고 |
+| EC2 중지·시작 | PrivateLink MongoDB ping 정상, 오프셋 561~576의 이벤트 16건 저장 | 서버 담당 제공 보고 |
+| 상시 저장 | 아이폰 이벤트 504~560의 57건, ID·오프셋·원문 일치 | 서버 담당 제공 보고 |
+
+위 범위는 서로 겹칠 수 있으므로 합산해 전체 처리 건수로 사용하지 않습니다.
+
+[복구 검사 코드](experiments/02_파이프라인/video_recovery_checks_v0.1_20261109/test_video_recovery.py) · [원장·집계 코드](experiments/02_파이프라인/video_spark_stats_v0.1_20261109/spark_video_stats.py) · [저장된 회귀·복구 결과](evidence/pipeline-regression.json) · [서버 배포·검증 보고](server/aws-deployment-report.md)
 
 ## 예외 처리와 운영 개선
 
@@ -372,3 +453,4 @@ iOS 코드는 mobile/ios, Android 코드는 mobile/android, Python 실험은 exp
 - 누락 오프셋의 Spark 배치 재처리 및 원장 대조
 - 실제 MongoDB 복합 인덱스 적용, 원문 보존 확인, 임시 컬렉션 예외 시험
 - 메인·DB EC2 탄력적 IP 적용과 팀 인수인계
+
