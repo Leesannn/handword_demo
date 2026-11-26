@@ -4,8 +4,6 @@
 
 카메라로 수어 단어를 읽고, 본보기 동작을 따라 연습하며, 학습 기록을 AWS에 수집하는 모바일 팀 프로젝트입니다. iOS와 Android에서 동작 좌표를 추출하고 기기에서 단어를 판정합니다. 서버는 학습 이벤트를 Kafka와 Spark로 처리해 MongoDB 원장과 통계로 보관합니다.
 
-**팀 프로젝트 기술 문서 v7 · 지연 이벤트·장애 복구 검증 보강 · 2026-11-26**
-
 MediaPipe 좌표 추출·품질 검사와 kNN 학습 실험에서 시작해, 영상 비동기 작업·Kafka·Spark 검사를 거쳐 실제 모바일 학습 이벤트를 AWS MongoDB까지 연결했습니다. 개발 과정의 소스, 현재 앱·서버 구조, 실행 근거를 하나의 저장소에서 추적할 수 있도록 구성했습니다.
 
 | 구성 | 구현·수행 내용 |
@@ -20,12 +18,10 @@ MediaPipe 좌표 추출·품질 검사와 kNN 학습 실험에서 시작해, 영
 
 핵심 결과는 124시퀀스의 고정 분할 학습·평가, 영상 작업 API 12개·단어 회귀 18개 검사, 두 아이폰 이벤트 17건 저장, MongoDB 검사 문서 73→10, 모바일 엔진 기준 계산 일치입니다. 직접 실행·저장된 과거 결과·담당자 보고를 구분해 [검증 결과](docs/verification.md)와 [측정 근거](evidence/README.md)에 연결했습니다.
 
-이번 README의 기준은 [소스 통합 커밋 41491b6](https://github.com/Shinkyeongho/handword_demo/tree/41491b63fd5b5ee9335bb2b06be53f12a3405990)입니다. 팀원 PR #1·#2의 앱 확인 내용과 README 수정사항을 유지하고 지연 이벤트·장애 복구의 검증 근거를 보강했습니다.
-
 ## 목차
 
 - [프로젝트 배경과 목표](#프로젝트-배경과-목표)
-- [과제와 연결한 구현 내용](#과제와-연결한-구현-내용)
+- [project 구현 내용](#project-구현-내용)
 - [사용자 기능](#사용자-기능)
 - [전체 아키텍처](#전체-아키텍처)
 - [기술 스택과 선택](#기술-스택과-선택)
@@ -52,11 +48,11 @@ MediaPipe 좌표 추출·품질 검사와 kNN 학습 실험에서 시작해, 영
 3. 연결이 일시적으로 끊겨도 학습 기록을 기기에 보관하고 재전송합니다.
 4. 앱 이벤트를 서버·Kafka·MongoDB에서 같은 ID로 추적하고, 집계의 근거를 원장에 남깁니다.
 
-## 과제와 연결한 구현 내용
+## project 구현 내용
 
-강사님이 제시한 ‘실시간 로그 통합 파이프라인’을 수어 인식·교육 앱의 실제 학습 기록에 적용했습니다. 다음 표는 팀이 진행한 작업과 그 근거를 연결합니다.
+수어 인식·교육 앱의 학습 기록을 실시간 로그 통합 파이프라인으로 연결했습니다. 이벤트 수집부터 스트리밍 처리, 재전송·복구, 저장 조회 최적화까지 구현하고 단계별 결과를 검증했습니다.
 
-| 과제와 연결되는 영역 | 팀 구현·수행 내용 | 근거 |
+| 구현 영역 | 팀 구현·수행 내용 | 근거 |
 |---|---|---|
 | 실시간 이벤트 수집 | 학습 시작·연습 단어·인식 결과·재시도·완료를 배치 API로 받고 Kafka에 발행 | 앱 소스·서버 담당 보고·실제 이벤트 대조 |
 | 토픽과 메시지 키 | 학습 이벤트 토픽 사용, user_id를 Kafka 키로 지정, 파티션·오프셋으로 메시지 추적 | 실제 Kafka 조회·서버 담당 보고 |
@@ -78,32 +74,13 @@ MediaPipe 좌표 추출·품질 검사와 kNN 학습 실험에서 시작해, 영
 | 사용자 확인 | 번역 결과를 확인하거나 다른 단어로 수정한 기록 수집 |
 | 자동 동기화 | 기록을 먼저 로컬 큐에 넣고 서버 응답에 따라 삭제·재시도 |
 
-iOS는 SceneKit 3D 본보기를 회전해 볼 수 있습니다. Android는 해당 본보기를 렌더링한 프레임을 재생하며, 회전 가능한 3D 장면은 iOS 구현 범위입니다. 카메라 화면 위에 사용자의 동작을 따라 그리던 실시간 사람 모형은 11월 24일에 두 앱에서 제거했습니다.
+iOS는 SceneKit 3D 본보기를 회전해 볼 수 있습니다. Android는 해당 본보기를 렌더링한 프레임을 재생하며, 회전 가능한 3D 장면은 iOS 구현 범위입니다. 카메라 화면 위에 사용자의 동작을 따라 그리던 실시간 사람 모형은 두 앱에서 제거했습니다.
 
 ## 전체 아키텍처
 
-```mermaid
-flowchart TD
-    C[카메라] --> L[기기 내 MediaPipe 좌표 추출]
-    L --> P[구간 선택 · 30프레임 재표본화 · 정규화]
-    P --> M[r0006 GRU 기기 내 추론]
-    M --> U[번역 · 따라 하기 화면]
-    U --> O[로컬 이벤트 Outbox]
-    O --> H[Caddy HTTPS]
-    subgraph MAIN[메인 AWS 계정 · EC2 Docker]
-        H --> A[FastAPI POST /v1/events]
-        A --> K[Kafka]
-        K --> S[Spark Structured Streaming]
-    end
-    S --> E[Interface VPC Endpoint]
-    E --> V[AWS PrivateLink Endpoint Service]
-    subgraph DB[DB AWS 계정]
-        V --> N[Internal NLB]
-        N --> D[EC2 MongoDB · TLS]
-        D --> R[이벤트 원장]
-        D --> G[집계 스냅샷]
-    end
-```
+[![전체 아키텍처: 모바일 인식·이벤트 수집·AWS MongoDB 적재](assets/diagrams/architecture.png)](assets/diagrams/architecture.svg)
+
+*이미지를 클릭하면 SVG 원본을 볼 수 있습니다.*
 
 그림은 실제 학습 이벤트의 적재 경로입니다. 카메라 영상은 기기에서 좌표 추출에 사용하고, 서버에는 학습 이벤트 JSON을 전송합니다.
 
@@ -129,18 +106,11 @@ flowchart TD
 
 카메라 검출 결과를 곧바로 학습시키지 않고, 원시 좌표·손 배정·정규화·시간 길이·결측 마스크·분할을 단계별로 검사하는 코드를 작성했습니다.
 
-```mermaid
-flowchart LR
-    C[기준 영상·직접 녹화] --> R[MediaPipe 손·Pose 추출]
-    R --> H[손 배정·59점 XYZ·유효 마스크]
-    H --> N[어깨 중심·너비 정규화]
-    N --> T[라벨 구간·30프레임 선택]
-    T --> Q[입력·해시·분할 검사]
-    Q --> K[kNN 학습·특징 비교]
-    K --> V[영상 작업 API·Kafka·Spark 회귀 검사]
-```
+[![MediaPipe 개발: 원시 좌표·손 배정·정규화·학습 입력·모델 평가](assets/diagrams/mediapipe-development.png)](assets/diagrams/mediapipe-development.svg)
 
-| 기술 과제 | 구현 내용 | 코드 |
+*이미지를 클릭하면 SVG 원본을 볼 수 있습니다.*
+
+| 기술 구현 | 구현 내용 | 코드 |
 |---|---|---|
 | 녹화 시각·파일 관리 | 실제 프레임 시각으로 FPS 계산, 프레임 크기 검사·임시 파일 저장 | [record_webcam_clip.py](experiments/03_실습코드/record_webcam_clip.py) |
 | 손 슬롯 안정화 | 라벨·이전 손목 위치로 배정, 모호한 후보 보류 | [track_hands_v2_experiment.py](experiments/03_실습코드/track_hands_v2_experiment.py) |
@@ -187,7 +157,7 @@ flowchart LR
 
 30프레임 재표본화는 구간의 프레임 인덱스를 균등 선택하는 방식입니다. 화면 비율로 x·z 단위를 맞추고 어깨 중심·너비로 정규화합니다. 어깨 미검출은 같은 시퀀스의 유효 평균으로 처리하고 손 z에는 손목 기준 좌표라는 예외를 적용합니다.
 
-제공 Android ZIP의 엔진·모델·기준 데이터 1건을 2026-11-25 다시 계산했습니다. 전처리 최대 절대 오차는 **2.384×10⁻⁷**, 확률 최대 절대 오차는 **7.645×10⁻⁸**로 제공 테스트의 허용 기준을 통과했고, 기대 단어 ‘감사’도 일치했습니다. 이 수치는 제공 단일 기준 입력의 계산 일치 결과입니다.
+Android 엔진·모델의 기준 데이터 1건으로 전처리와 확률을 재계산했습니다. 전처리 최대 절대 오차는 **2.384×10⁻⁷**, 확률 최대 절대 오차는 **7.645×10⁻⁸**로 제공 테스트의 허용 기준을 통과했고, 기대 단어 ‘감사’도 일치했습니다. 이 수치는 제공 단일 기준 입력의 계산 일치 결과입니다.
 
 [전처리 수식·좌우 선택·엔진 계산](docs/app-engine.md) · [재검증 결과 JSON](evidence/android-engine-reference.json)
 
@@ -222,7 +192,7 @@ flowchart LR
 
 ### 실제 아이폰의 지연 도착 대조
 
-2026년 11월 25일, 폰에 대기 중이던 기록 9건이 고정 주소 빌드 설치 후 전송됐습니다. 앱 담당자의 전송 로그와 DB 담당자의 원장 조회를 연결했습니다. 아래 시각은 한국 시간입니다.
+폰에 대기 중이던 기록 9건이 고정 주소 빌드 설치 후 전송됐습니다. 앱 담당자의 전송 로그와 DB 담당자의 원장 조회를 연결했습니다. 아래 시각은 한국 시간입니다.
 
 | 관측 항목 | 실제 확인 내용 |
 |---|---|
@@ -232,20 +202,9 @@ flowchart LR
 | MongoDB 대조 | 오프셋 578~586의 9건 저장 |
 | 이어진 학습 | 09:14에 감사 학습 8건 전송·모두 202, 원장 587~594와 연결 |
 
-```mermaid
-sequenceDiagram
-    participant User as 학습 동작
-    participant Queue as 아이폰 Outbox
-    participant API as 이벤트 API
-    participant DB as MongoDB 원장
-    User->>Queue: 09:06~09:07 발생 기록 보관
-    Note over Queue: event_id·event_time 유지
-    Queue->>API: 09:13 기록 9건 전송
-    API->>API: received_at 09:13:01 기록
-    API-->>Queue: HTTP 202
-    API->>DB: Kafka·Spark를 통한 비동기 저장
-    Note over DB: 오프셋 578~586의 9건 대조
-```
+[![지연 도착 기록: 발생·Outbox 대기·서버 수신·원장 대조](assets/diagrams/late-arrival.png)](assets/diagrams/late-arrival.svg)
+
+*이미지를 클릭하면 SVG 원본을 볼 수 있습니다.*
 
 이 사례는 발생 후 수분 뒤 도착한 이벤트의 전송·원장 저장을 확인한 결과입니다. 발생→수신 시각 차이에는 폰의 대기 시간이 포함되므로 Spark 처리 지연이나 DB 쓰기 시간으로 환산하지 않습니다. 지연 도착 기록의 적재 대조와 시간 창 통계의 계산 의미를 구분해 제시합니다.
 
@@ -277,29 +236,17 @@ sequenceDiagram
 
 ## 데이터 모델과 ERD
 
-현재 물리 저장은 MongoDB 이벤트 원장 문서이며, 내부 이벤트 필드는 payload JSON 문자열에 들어 있습니다. 아래는 실제 확인한 최상위 필드입니다.
+데이터 모델은 **실제 저장 구조**와 **앱 이벤트의 논리적 연결**을 나누어 표현했습니다. 위쪽은 MongoDB 원장에 직접 저장되는 네 필드, 아래쪽은 payload 내부 식별자를 통해 연결되는 사용자·세션·학습·인식 관계입니다.
 
-```mermaid
-erDiagram
-    EVENT_LEDGER {
-        string _id PK "앱 event_id"
-        string topic "Kafka 토픽"
-        int offset "파티션 내부 위치"
-        string payload "JSON 이벤트 원문"
-    }
-```
+[![데이터 모델과 ERD: MongoDB 물리 원장과 앱 이벤트의 논리적 관계](assets/diagrams/data-model.png)](assets/diagrams/data-model.svg)
 
-앱에서 사용자·세션·학습·인식이 이어지는 관계는 다음과 같습니다. 아래 노드는 논리적 개념이며, 사용자·학습 전용 컬렉션과 외래 키를 구현했다는 의미는 아닙니다.
+*이미지를 클릭하면 SVG 원본을 볼 수 있습니다.*
 
-```mermaid
-erDiagram
-    APP_USER ||--o{ APP_SESSION : user_id
-    APP_SESSION ||--o{ LEARNING_EVENT : session_id
-    LESSON ||--o{ LEARNING_EVENT : lesson_id
-    READING ||--o{ LEARNING_EVENT : reading_id
-```
+- **물리 저장:** _id는 event_id 기반 고유 키이며 topic·offset·payload로 원천 위치와 원문을 보관합니다.
+- **논리 관계:** user_id·session_id·lesson_id·reading_id로 이벤트를 연결합니다. 이벤트 종류에 따라 해당 식별자를 사용합니다.
+- **집계:** 여러 원장 이벤트에서 학습 통계를 계산합니다. 논리적 연결은 별도 사용자·학습 컬렉션이나 외래 키 제약을 뜻하지 않습니다.
 
-집계는 여러 원장 이벤트에서 계산합니다. 원장 구조와 이벤트 간 연결은 [데이터 모델 문서](docs/data-model.md)에 정리했습니다.
+[실제 필드·논리 관계·실습 원장 상세](docs/data-model.md)
 
 ## 비동기 작업·복구 검증
 
@@ -388,7 +335,7 @@ Spark 시제품은 foreachBatch에서 이벤트의 종류·버전·필수 ID를 
 | 실제 아이폰 이벤트 | 전달받은 이벤트 ID·오프셋 11건 일치, 이후 13건 추가 대조 일치 | DB 담당 직접 조회 |
 | 아이폰 2대 동시 사용 | 시작 요청 수신 시각 차이 0.223초, 두 사용자·세션의 기록 총 17건 저장 | DB 담당 직접 조회 |
 | Android 연동 | 오프셋 570~576의 이벤트 7건 저장, `device=android-16` 확인 | DB 담당 직접 조회 |
-| 재전송 관찰 | 11월 25일 기록 9건이 09:13:01에 수신돼 원장에 저장, 이후 8건 추가 저장 | DB 담당 직접 조회 |
+| 재전송 관찰 | 대기 기록 9건이 09:13:01에 수신돼 원장에 저장, 이후 8건 추가 저장 | DB 담당 직접 조회 |
 | 원장 조회 최적화 | 문서 검사 73→10, 반환 문서 BSON 해시·순서 일치 | DB 담당 실행 계획·문서 비교 |
 | 재시도·잘못된 입력 | 임시 컬렉션에서 재전송 한 건 유지, 원본 보존, 오류 11000·121 확인 | DB 담당의 별도 합성 시험 |
 | 누락 재처리 | 누락 4건 재처리 후 기존 24건 포함 총 28건 대조 일치 | 서버 담당 제공 보고 |
@@ -401,16 +348,13 @@ Spark 시제품은 foreachBatch에서 이벤트의 종류·버전·필수 ID를 
 
 ## 역할과 협업
 
-| 역할 | 기여 |
-|---|---|
-| 데이터·파이프라인 개발 | 직접 녹화·MediaPipe 추출·손 배정·특징 변환·kNN 학습·평가, 영상 작업·Kafka·Spark·복구 실습 |
-| 앱·추론 담당 | iOS·Android 앱, 좌표 전처리와 r0006 추론 연동, 학습 UI·본보기, Outbox·재전송, 이벤트 규격 |
-| 메인 서버 담당 | EC2·Docker, Caddy HTTPS, FastAPI 입력 검증, Kafka·Spark 상시 작업, 집계·재처리·재시작 운영 |
-| DB·계정 간 연결 담당 | EC2 MongoDB, PrivateLink 제공 경로, TLS·인증 접속 검증, 원장 직접 대조, 조회 인덱스, DB 예외 시험·인수인계 |
+| 팀원 | 담당 영역 | 주요 구현·수행 내용 |
+|---|---|---|
+| **신경호** | 데이터·파이프라인 개발 및 DB | 녹화·MediaPipe 좌표 처리·손 배정·특징 변환·kNN 실험, 영상 작업·Kafka·Spark·복구 실습, MongoDB·PrivateLink·TLS 연결, 원장 대조·조회 인덱스·DB 예외 시험 |
+| **이종연** | 메인 서버 | AWS EC2·Docker·Caddy HTTPS, FastAPI 인증·입력 검증, Kafka·Spark 상시 작업, 학습 지표·재처리·재시작 운영 |
+| **김형준** | 앱 개발 | iOS·Android 앱, MediaPipe·r0006 추론 연동, 전처리·학습 UI·본보기, Outbox·재전송, 이벤트 규격·실기기 전송 확인 |
 
-역할별 기여는 제공 앱 소스·서버 보고·DB 수행 결과에 근거해 정리했습니다.
-
-협업에서는 앱의 `event_id`를 공통 추적 키로 정하고, HTTP 응답 → Kafka 파티션·오프셋 → MongoDB 문서의 순서로 확인했습니다.
+협업의 공통 추적 키는 event_id입니다. 앱의 전송 로그와 HTTP 응답, 서버의 Kafka 파티션·오프셋, DB 원장의 ID·원문을 함께 대조해 수신·처리·저장 구간을 검증했습니다.
 
 ## 실행 및 문서
 
@@ -422,7 +366,7 @@ Spark 시제품은 foreachBatch에서 이벤트의 종류·버전·필수 ID를 
 | [MediaPipe 개발](docs/mediapipe-development.md) | 손 배정·결측·정규화·30프레임·입력 계약 |
 | [학습·평가](docs/model-development.md) | 124개 분할·kNN·특징 비교·평가 해석 |
 | [비동기 작업·복구](docs/prototype-pipeline.md) | 작업 API·Outbox·Kafka·1분 집계·중단 복구 |
-| [강사 요구사항 대응](docs/instructor-requirements.md) | 강사 과제와 연결되는 실제 팀 수행 내용 |
+| [project 구현 요약](docs/instructor-requirements.md) | 수집·처리·재전송·복구·최적화의 구현 근거 |
 | [스트리밍 처리 명세](docs/streaming-semantics.md) | Kafka 토픽·키, Spark 소비·집계·체크포인트, 누락 재처리 |
 | [아키텍처](docs/architecture.md) | 앱 추론·수집·계정 간 연결·설계 판단 |
 | [앱 엔진](docs/app-engine.md) | 좌표 슬롯·전처리 수식·좌우 보완·기준값 재검증 |
@@ -453,4 +397,3 @@ iOS 코드는 mobile/ios, Android 코드는 mobile/android, Python 실험은 exp
 - 누락 오프셋의 Spark 배치 재처리 및 원장 대조
 - 실제 MongoDB 복합 인덱스 적용, 원문 보존 확인, 임시 컬렉션 예외 시험
 - 메인·DB EC2 탄력적 IP 적용과 팀 인수인계
-

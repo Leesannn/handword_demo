@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1055" viewBox="0 0 1280 1055" role="img" aria-labelledby="title desc">
+<title id="title">학습 동작에서 분석 데이터까지</title><desc id="desc">기기 내 인식 → 비동기 이벤트 수집 → 계정 간 사설 DB 적재</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7a8da2"/></marker></defs>
+<rect width="1280" height="100%" fill="#f4f7fb"/>
+<g font-family="Malgun Gothic, Noto Sans KR, Arial, sans-serif">
+<text x="48" y="37" font-size="15" fill="#245fba" font-weight="700" text-anchor="start" letter-spacing="2">SYSTEM ARCHITECTURE</text>
+<text x="48" y="85" font-size="33" fill="#142c45" font-weight="700" text-anchor="start">학습 동작에서 분석 데이터까지</text>
+<text x="48" y="118" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">기기 내 인식 → 비동기 이벤트 수집 → 계정 간 사설 DB 적재</text>
+<rect x="40" y="153" width="1200" height="235" rx="18" fill="#eaf7f3" stroke="#eaf7f3" stroke-width="1.5"/>
+<text x="62" y="190" font-size="21" fill="#087f72" font-weight="700" text-anchor="start">01  MOBILE  ·  iOS / Android</text>
+<rect x="40" y="445" width="1200" height="235" rx="18" fill="#edf3fc" stroke="#edf3fc" stroke-width="1.5"/>
+<text x="62" y="482" font-size="21" fill="#245fba" font-weight="700" text-anchor="start">02  STREAMING  ·  메인 AWS 계정</text>
+<rect x="40" y="737" width="1200" height="245" rx="18" fill="#f2edfa" stroke="#f2edfa" stroke-width="1.5"/>
+<text x="62" y="774" font-size="21" fill="#7050b2" font-weight="700" text-anchor="start">03  STORAGE  ·  PrivateLink / DB AWS 계정</text>
+<rect x="62" y="220" width="250" height="133" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="62" y="240" width="5" height="93" rx="2" fill="#087f72"/>
+<text x="84" y="255" font-size="22" fill="#087f72" font-weight="700" text-anchor="start">카메라</text>
+<text x="84" y="289" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">프레임 획득</text>
+<text x="84" y="316" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">영상은 기기에서 처리</text>
+<path d="M320 285 L354 285" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<rect x="364" y="220" width="250" height="133" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="364" y="240" width="5" height="93" rx="2" fill="#087f72"/>
+<text x="386" y="255" font-size="22" fill="#087f72" font-weight="700" text-anchor="start">MediaPipe</text>
+<text x="386" y="289" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">손·상체 59점 추출</text>
+<text x="386" y="316" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">30프레임 전처리</text>
+<path d="M622 285 L656 285" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<rect x="666" y="220" width="250" height="133" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="666" y="240" width="5" height="93" rx="2" fill="#087f72"/>
+<text x="688" y="255" font-size="22" fill="#087f72" font-weight="700" text-anchor="start">r0006 GRU</text>
+<text x="688" y="289" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">Core ML / JavaScript</text>
+<text x="688" y="316" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">단어·미인식 결과</text>
+<path d="M924 285 L958 285" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<rect x="968" y="220" width="250" height="133" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="968" y="240" width="5" height="93" rx="2" fill="#087f72"/>
+<text x="990" y="255" font-size="22" fill="#087f72" font-weight="700" text-anchor="start">학습 화면 · Outbox</text>
+<text x="990" y="289" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">학습 행동 로그 생성</text>
+<text x="990" y="316" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">event_id 유지·재전송</text>
+<path d="M640 397 L640 432" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<text x="664" y="423" font-size="17" fill="#536b80" font-weight="400" text-anchor="start">학습 이벤트 JSON / HTTPS</text>
+<rect x="62" y="512" width="338" height="133" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="62" y="532" width="5" height="93" rx="2" fill="#245fba"/>
+<text x="84" y="547" font-size="22" fill="#245fba" font-weight="700" text-anchor="start">Caddy + FastAPI</text>
+<text x="84" y="581" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">HTTPS · 인증·입력 검증</text>
+<text x="84" y="608" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">Kafka 발행 확인 후 202</text>
+<rect x="471" y="512" width="338" height="133" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="471" y="532" width="5" height="93" rx="2" fill="#245fba"/>
+<text x="493" y="547" font-size="22" fill="#245fba" font-weight="700" text-anchor="start">Kafka</text>
+<text x="493" y="581" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">user_id 키로 이벤트 발행</text>
+<text x="493" y="608" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">토픽·파티션·오프셋 추적</text>
+<rect x="880" y="512" width="338" height="133" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="880" y="532" width="5" height="93" rx="2" fill="#245fba"/>
+<text x="902" y="547" font-size="22" fill="#245fba" font-weight="700" text-anchor="start">Spark 스트리밍</text>
+<text x="902" y="581" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">체크포인트 기반 소비</text>
+<text x="902" y="608" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">학습 지표·원장 출력</text>
+<path d="M410 578 L459 578" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<path d="M819 578 L868 578" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<path d="M640 689 L640 724" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<text x="664" y="715" font-size="17" fill="#536b80" font-weight="400" text-anchor="start">비동기 소비·저장</text>
+<rect x="62" y="805" width="470" height="138" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="62" y="825" width="5" height="98" rx="2" fill="#7050b2"/>
+<text x="84" y="840" font-size="22" fill="#7050b2" font-weight="700" text-anchor="start">PrivateLink · TLS</text>
+<text x="84" y="874" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">Interface Endpoint → Endpoint Service</text>
+<text x="84" y="901" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">Internal NLB → 인증된 DB 연결</text>
+<rect x="668" y="805" width="550" height="138" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="668" y="825" width="5" height="98" rx="2" fill="#7050b2"/>
+<text x="690" y="840" font-size="22" fill="#7050b2" font-weight="700" text-anchor="start">MongoDB</text>
+<text x="690" y="874" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">이벤트 원장 · 학습 집계 스냅샷</text>
+<text x="690" y="901" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">event_id · topic · offset · payload</text>
+<path d="M548 874 L650 874" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<text x="48" y="1030" font-size="16" fill="#536b80" font-weight="400" text-anchor="start">흐름 기준: 현재 모바일 이벤트 적재 경로  ·  단말 추론과 서버 로그 처리를 분리</text>
+</g>
+</svg>

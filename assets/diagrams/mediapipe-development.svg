@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1010" viewBox="0 0 1280 1010" role="img" aria-labelledby="title desc">
+<title id="title">원시 좌표를 검증 가능한 학습 입력으로</title><desc id="desc">촬영·검출부터 특징 계약·데이터 분할·기준선 평가까지 단계별로 관리</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7a8da2"/></marker></defs>
+<rect width="1280" height="100%" fill="#f4f7fb"/>
+<g font-family="Malgun Gothic, Noto Sans KR, Arial, sans-serif">
+<text x="48" y="37" font-size="15" fill="#245fba" font-weight="700" text-anchor="start" letter-spacing="2">MEDIAPIPE &amp; MODEL DEVELOPMENT</text>
+<text x="48" y="85" font-size="33" fill="#142c45" font-weight="700" text-anchor="start">원시 좌표를 검증 가능한 학습 입력으로</text>
+<text x="48" y="118" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">촬영·검출부터 특징 계약·데이터 분할·기준선 평가까지 단계별로 관리</text>
+<rect x="48" y="184" width="360" height="177" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="48" y="204" width="5" height="137" rx="2" fill="#087f72"/>
+<text x="70" y="219" font-size="22" fill="#087f72" font-weight="700" text-anchor="start">입력 수집</text>
+<text x="70" y="253" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">기준 영상 · 직접 녹화</text>
+<text x="70" y="280" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">프레임 시각·크기 검사</text>
+<text x="390" y="347" font-size="14" fill="#087f72" font-weight="700" text-anchor="end">01</text>
+<path d="M420 272 L447 272" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<rect x="460" y="184" width="360" height="177" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="460" y="204" width="5" height="137" rx="2" fill="#087f72"/>
+<text x="482" y="219" font-size="22" fill="#087f72" font-weight="700" text-anchor="start">원시 좌표 추출</text>
+<text x="482" y="253" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">Hands 42점 + Pose 17점</text>
+<text x="482" y="280" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">XYZ · 검출 정보 보관</text>
+<text x="802" y="347" font-size="14" fill="#087f72" font-weight="700" text-anchor="end">02</text>
+<path d="M832 272 L859 272" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<rect x="872" y="184" width="360" height="177" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="872" y="204" width="5" height="137" rx="2" fill="#087f72"/>
+<text x="894" y="219" font-size="22" fill="#087f72" font-weight="700" text-anchor="start">손 배정 · 품질 검사</text>
+<text x="894" y="253" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">손목 연속성 · 좌우 슬롯</text>
+<text x="894" y="280" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">NaN · 유효 마스크 유지</text>
+<text x="1214" y="347" font-size="14" fill="#087f72" font-weight="700" text-anchor="end">03</text>
+<rect x="48" y="467" width="360" height="177" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="48" y="487" width="5" height="137" rx="2" fill="#245fba"/>
+<text x="70" y="502" font-size="22" fill="#245fba" font-weight="700" text-anchor="start">기준 좌표 정규화</text>
+<text x="70" y="536" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">어깨 중점 · 너비 기준</text>
+<text x="70" y="563" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">원본 XYZ는 별도 보존</text>
+<text x="390" y="630" font-size="14" fill="#245fba" font-weight="700" text-anchor="end">04</text>
+<path d="M420 555 L447 555" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<rect x="460" y="467" width="360" height="177" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="460" y="487" width="5" height="137" rx="2" fill="#245fba"/>
+<text x="482" y="502" font-size="22" fill="#245fba" font-weight="700" text-anchor="start">시간 길이 통일</text>
+<text x="482" y="536" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">라벨 구간에서 30프레임</text>
+<text x="482" y="563" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">원본 인덱스·시각 보존</text>
+<text x="802" y="630" font-size="14" fill="#245fba" font-weight="700" text-anchor="end">05</text>
+<path d="M832 555 L859 555" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<rect x="872" y="467" width="360" height="177" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="872" y="487" width="5" height="137" rx="2" fill="#245fba"/>
+<text x="894" y="502" font-size="22" fill="#245fba" font-weight="700" text-anchor="start">학습 · 평가</text>
+<text x="894" y="536" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">촬영 코드로 분할</text>
+<text x="894" y="563" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">validation 선택 · test 평가</text>
+<text x="1214" y="630" font-size="14" fill="#245fba" font-weight="700" text-anchor="end">06</text>
+<path d="M1052 373 V407 H228 V453" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<text x="640" y="432" font-size="18" fill="#536b80" font-weight="400" text-anchor="middle">원시 정보 보존 → 파생 특징 생성</text>
+<rect x="48" y="692" width="1184" height="235" rx="18" fill="#eaf0f8" stroke="#eaf0f8" stroke-width="1.5"/>
+<text x="72" y="730" font-size="22" fill="#142c45" font-weight="700" text-anchor="start">FEATURE CONTRACT  ·  차원과 의미를 함께 관리</text>
+<rect x="72" y="753" width="344" height="139" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="72" y="773" width="5" height="99" rx="2" fill="#087f72"/>
+<text x="94" y="788" font-size="22" fill="#087f72" font-weight="700" text-anchor="start">실험 kNN · 177값</text>
+<text x="94" y="822" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">정규화 XY 118</text>
+<text x="94" y="849" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">+ 유효 마스크 59</text>
+<rect x="468" y="753" width="344" height="139" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="468" y="773" width="5" height="99" rx="2" fill="#245fba"/>
+<text x="490" y="788" font-size="22" fill="#245fba" font-weight="700" text-anchor="start">손목 특징 · 183값</text>
+<text x="490" y="822" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">손목 상대 손 좌표</text>
+<text x="490" y="849" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">+ 손목 위치·마스크</text>
+<rect x="864" y="753" width="344" height="139" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="864" y="773" width="5" height="99" rx="2" fill="#7050b2"/>
+<text x="886" y="788" font-size="22" fill="#7050b2" font-weight="700" text-anchor="start">모바일 GRU · 177값</text>
+<text x="886" y="822" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">59점의 XYZ</text>
+<text x="886" y="849" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">+ 모바일 전처리 계약</text>
+<text x="48" y="985" font-size="16" fill="#536b80" font-weight="400" text-anchor="start">고정 분할: train 76 · validation 16 · test 32  |  같은 177값도 입력 의미가 다르면 별도 계약</text>
+</g>
+</svg>
