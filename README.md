@@ -23,6 +23,7 @@ MediaPipe 좌표 추출·품질 검사와 kNN 학습 실험에서 시작해, 영
 - [프로젝트 배경과 목표](#프로젝트-배경과-목표)
 - [project 구현 내용](#project-구현-내용)
 - [사용자 기능](#사용자-기능)
+- [앱 구동화면과 예시](#앱-구동화면과-예시)
 - [전체 아키텍처](#전체-아키텍처)
 - [기술 스택과 선택](#기술-스택과-선택)
 - [MediaPipe 개발과 모델 실험](#mediapipe-개발과-모델-실험)
@@ -75,6 +76,59 @@ MediaPipe 좌표 추출·품질 검사와 kNN 학습 실험에서 시작해, 영
 | 자동 동기화 | 기록을 먼저 로컬 큐에 넣고 서버 응답에 따라 삭제·재시도 |
 
 iOS는 SceneKit 3D 본보기를 회전해 볼 수 있습니다. Android는 해당 본보기를 렌더링한 프레임을 재생하며, 회전 가능한 3D 장면은 iOS 구현 범위입니다. 카메라 화면 위에 사용자의 동작을 따라 그리던 실시간 사람 모형은 두 앱에서 제거했습니다.
+
+## 앱 구동화면과 예시
+
+번역 결과 확인부터 본보기 학습·재시도·완료까지, 화면 조작과 학습 이벤트의 연결입니다. **아래 화면은 iPhone 앱 코드로 Mac에서 렌더링한 UI 예시**이며, 실제 기기 캡처·서버 적재 증빙과 구분합니다.
+
+### 번역 · 동작 입력에서 사용자 확인까지
+
+<table>
+<tr><th>① 동작 입력</th><th>② 인식 결과</th><th>③ 판정 상세</th><th>④ 불확실한 결과</th></tr>
+<tr><td><img src="assets/app-demo/screen-02.png" width="180" alt="번역 동작을 읽는 화면"></td><td><img src="assets/app-demo/screen-03.png" width="180" alt="감사 판정 결과"></td><td><img src="assets/app-demo/screen-04.png" width="180" alt="동작 길이와 손 검출 상태 상세"></td><td><img src="assets/app-demo/screen-05.png" width="180" alt="확실하지 않은 결과와 후보 선택"></td></tr>
+<tr><td>0.5~3초 동작 구간</td><td>낱말·신뢰도 표시</td><td>검출 상태·낱말 수정</td><td>후보 확인·다시 읽기</td></tr>
+</table>
+
+- **판정 종료:** `recognition_result` 생성. 번역 결과 `read`, 불확실 `unsure`, 짧은 입력 `too_short` 등 구분.
+- **사용자 확인·수정:** `answer_selected` 생성. `was_corrected=false`는 기존 후보 확인, `true`는 다른 낱말로 수정.
+- **화면 이동:** 결과 상세 열기·카메라 전환·탭 이동 자체는 학습 이벤트 미생성.
+
+### 학습 · 본보기에서 시도·재시도·완료까지
+
+<table>
+<tr><th>① 낱말 선택</th><th>② 본보기 학습</th><th>③ 따라 하기 준비</th><th>④ 인식 결과</th></tr>
+<tr><td><img src="assets/app-demo/screen-06.png" width="180" alt="학습할 낱말 목록"></td><td><img src="assets/app-demo/screen-07.png" width="180" alt="감사 본보기와 동작 순서"></td><td><img src="assets/app-demo/screen-08.png" width="180" alt="따라 하기 카운트다운"></td><td><img src="assets/app-demo/screen-10.png" width="180" alt="따라 하기 정답 피드백"></td></tr>
+<tr><td>5개 목표 낱말</td><td>동작 순서·느린 재생</td><td>3·2·1 준비 후 동작</td><td>결과 확인·반복 연습</td></tr>
+</table>
+
+```mermaid
+flowchart LR
+    A[본보기 · 따라 하기] -->|lesson_started| B[준비 · 시도 시작]
+    B -->|practice_attempt| C[동작 인식]
+    C -->|recognition_result| D{판정 결과}
+    D -->|실패 후 다시 시작| E[retry + practice_attempt]
+    E --> C
+    D -->|세 번째 성공| F[lesson_completed]
+    D -->|한 번 더| B
+    F -->|닫기 · 마치기| G[lesson_ended]
+```
+
+*도식은 이벤트 발생 순서의 요약. 상세 화면·예외 분기는 [앱 화면과 이벤트 예시](docs/app-demo.md) 참고.*
+
+### 실제 전송 예시 · 재시도를 포함한 학습 기록 8건
+
+앱 담당자 제공 전송 기록에서 `lesson_started → practice_attempt → recognition_result(unknown) → retry → practice_attempt → recognition_result(correct) → lesson_completed → lesson_ended`의 8건 확인. 이 중 마지막 성공은 누적 세 번째 성공에 해당하며, 아래 발췌가 전체 세션의 모든 시도를 의미하지는 않습니다.
+
+| 관측 구간 | 수치 | 측정 범위 |
+|---|---:|---|
+| 이벤트 생성 → HTTP 202 수신 | **1.53~1.59초** | iPhone 18 Pro Max 이벤트 8건, 담당자 제공 기록 |
+| 앱 배치 대기 설정 | **1.5초** | 앱 코드의 전송 정책 |
+| 관측 지연에서 대기 설정을 뺀 잔여 | **0.03~0.09초** | 단순 차감 계산값. 네트워크 RTT·서버 처리시간의 독립 측정값 아님 |
+| 시도 시작 → 판정 이벤트 생성 | **5.90초 / 6.06초** | 준비 카운트다운·사용자 동작 등을 포함한 2개 시도 |
+
+**HTTP 202는 Kafka 발행 확인에 따른 접수 응답. MongoDB 저장 완료 응답과 구분.** 이 자료만으로 Kafka→Spark→MongoDB 구간의 지연은 산출하지 않습니다.
+
+[전체 10개 화면·이벤트 대응표·전송 예시 보기](docs/app-demo.md)
 
 ## 전체 아키텍처
 
