@@ -28,3 +28,4 @@ API는 Kafka 발행을 확인한 뒤 202를 반환합니다. MongoDB 저장은 S
 시간 측정은 0~1ms였으므로 성과는 문서 검사량 감소와 별도 정렬 제거로 표현합니다.
 
 [아키텍처](architecture.md) · [예외 처리·최적화](reliability-and-optimization.md) · [검증 결과](verification.md)
+

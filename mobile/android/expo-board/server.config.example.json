@@ -1,0 +1,7 @@
+{
+  "BaseURL": "",
+  "EventsPath": "/v1/events",
+  "SamplesPath": "",
+  "APIKey": "",
+  "BatchSize": 100
+}

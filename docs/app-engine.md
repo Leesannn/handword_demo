@@ -110,3 +110,4 @@ npm test
 [파일 해시·환경·실행 결과](../evidence/android-engine-reference.json)
 
 앱 담당자 README의 아이폰 샘플 8건 판정 일치는 담당자의 제공 보고로 기록합니다.
+

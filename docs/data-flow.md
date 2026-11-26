@@ -93,3 +93,4 @@ sequenceDiagram
 ```
 
 event_time은 앱 동작 시각, sent_at은 배치 전송 시각, received_at은 서버 수신 시각입니다. 오프라인 기록의 재전송 여부를 해석할 때 이 시각을 함께 대조했습니다.
+

@@ -1,0 +1,735 @@
+{
+  "review_date": "2026-11-26",
+  "kind": "historical saved experiment audit",
+  "split_unit": "source capture code",
+  "experiments": [
+    {
+      "source": "04_데이터/ksl_data/knn_baseline_v1/evaluation.json",
+      "source_sha256": "042893929407639113315d5926bf9cddb227de3cd8ab5985a8af61fc1ade22e7",
+      "created_at": "2026-11-05T02:15:43.560847+00:00",
+      "algorithm": "NumPy kNN, Euclidean, uniform votes",
+      "preprocessing": "aihub-2d-upper50-nearest30-v1",
+      "classes": [
+        "coffee",
+        "milk",
+        "sleep_v1",
+        "sleep_v2",
+        "sleep_v3",
+        "sleep_v4",
+        "cold",
+        "thanks"
+      ],
+      "selected_k": 1,
+      "split_counts": {
+        "train": 76,
+        "validation": 16,
+        "test": 32
+      },
+      "groups": {
+        "train": [
+          "REAL01",
+          "REAL02",
+          "REAL03",
+          "REAL04",
+          "REAL05",
+          "REAL06",
+          "REAL07",
+          "REAL08",
+          "REAL09",
+          "REAL10"
+        ],
+        "validation": [
+          "REAL11",
+          "REAL12"
+        ],
+        "test": [
+          "REAL13",
+          "REAL14",
+          "REAL15",
+          "REAL16"
+        ]
+      },
+      "validation_trials": [
+        {
+          "k": 1,
+          "correct": 14,
+          "samples": 16,
+          "accuracy": 0.875,
+          "macro_f1": 0.8708333333333333
+        },
+        {
+          "k": 3,
+          "correct": 14,
+          "samples": 16,
+          "accuracy": 0.875,
+          "macro_f1": 0.8708333333333333
+        },
+        {
+          "k": 5,
+          "correct": 14,
+          "samples": 16,
+          "accuracy": 0.875,
+          "macro_f1": 0.8708333333333333
+        }
+      ],
+      "validation": {
+        "samples": 16,
+        "correct": 14,
+        "accuracy": 0.875,
+        "macro_f1": 0.8708333333333333,
+        "per_class": [
+          {
+            "class_id": "coffee",
+            "support": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "milk",
+            "support": 2,
+            "precision": 1,
+            "recall": 0.5,
+            "f1": 0.6666666666666666
+          },
+          {
+            "class_id": "sleep_v1",
+            "support": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "sleep_v2",
+            "support": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "sleep_v3",
+            "support": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "sleep_v4",
+            "support": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "cold",
+            "support": 2,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5
+          },
+          {
+            "class_id": "thanks",
+            "support": 2,
+            "precision": 0.6666666666666666,
+            "recall": 1,
+            "f1": 0.8
+          }
+        ],
+        "confusion_matrix_rows_actual_columns_predicted": [
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2
+          ]
+        ]
+      },
+      "test": {
+        "samples": 32,
+        "correct": 30,
+        "accuracy": 0.9375,
+        "macro_f1": 0.9370039682539683,
+        "per_class": [
+          {
+            "class_id": "coffee",
+            "support": 4,
+            "precision": 0.8,
+            "recall": 1,
+            "f1": 0.888888888888889
+          },
+          {
+            "class_id": "milk",
+            "support": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "sleep_v1",
+            "support": 4,
+            "precision": 0.75,
+            "recall": 0.75,
+            "f1": 0.75
+          },
+          {
+            "class_id": "sleep_v2",
+            "support": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "sleep_v3",
+            "support": 4,
+            "precision": 1,
+            "recall": 0.75,
+            "f1": 0.8571428571428571
+          },
+          {
+            "class_id": "sleep_v4",
+            "support": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "cold",
+            "support": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "thanks",
+            "support": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          }
+        ],
+        "confusion_matrix_rows_actual_columns_predicted": [
+          [
+            4,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            4,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            3,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            4
+          ]
+        ]
+      },
+      "dataset_sha256": "cecb6f0b7cad6373b2fb225bb39e339ea4ab36b1acb776e171b49463d50ddc31",
+      "target": "8-class exploratory kNN fixed split, separate from mobile r0006"
+    },
+    {
+      "source": "04_데이터/ksl_data/mediapipe_knn_v1/evaluation.json",
+      "source_sha256": "621d6344a989236d0644cd67f68d3ee4e53b2af7df40cd450c80a152d4c6864a",
+      "created_at": "2026-11-05T05:27:22.886969+00:00",
+      "algorithm": "NumPy kNN, Euclidean, uniform votes",
+      "preprocessing": "mediapipe-xy59-mask59-nearest30-v1",
+      "classes": [
+        "coffee",
+        "milk",
+        "sleep_v1",
+        "sleep_v2",
+        "sleep_v3",
+        "sleep_v4",
+        "cold",
+        "thanks"
+      ],
+      "selected_k": 1,
+      "split_counts": {
+        "train": 76,
+        "validation": 16,
+        "test": 32
+      },
+      "groups": {
+        "train": [
+          "REAL01",
+          "REAL02",
+          "REAL03",
+          "REAL04",
+          "REAL05",
+          "REAL06",
+          "REAL07",
+          "REAL08",
+          "REAL09",
+          "REAL10"
+        ],
+        "validation": [
+          "REAL11",
+          "REAL12"
+        ],
+        "test": [
+          "REAL13",
+          "REAL14",
+          "REAL15",
+          "REAL16"
+        ]
+      },
+      "validation_trials": [
+        {
+          "k": 1,
+          "correct": 15,
+          "samples": 16,
+          "accuracy": 0.9375,
+          "macro_f1": 0.9333333333333333
+        },
+        {
+          "k": 3,
+          "correct": 13,
+          "samples": 16,
+          "accuracy": 0.8125,
+          "macro_f1": 0.8083333333333333
+        },
+        {
+          "k": 5,
+          "correct": 13,
+          "samples": 16,
+          "accuracy": 0.8125,
+          "macro_f1": 0.8083333333333333
+        }
+      ],
+      "validation": {
+        "samples": 16,
+        "correct": 15,
+        "accuracy": 0.9375,
+        "macro_f1": 0.9333333333333333,
+        "per_class": [
+          {
+            "class_id": "coffee",
+            "support": 2,
+            "precision": 0.6666666666666666,
+            "recall": 1,
+            "f1": 0.8
+          },
+          {
+            "class_id": "milk",
+            "support": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "sleep_v1",
+            "support": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "sleep_v2",
+            "support": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "sleep_v3",
+            "support": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "sleep_v4",
+            "support": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "cold",
+            "support": 2,
+            "precision": 1,
+            "recall": 0.5,
+            "f1": 0.6666666666666666
+          },
+          {
+            "class_id": "thanks",
+            "support": 2,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          }
+        ],
+        "confusion_matrix_rows_actual_columns_predicted": [
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2
+          ]
+        ]
+      },
+      "test": {
+        "samples": 32,
+        "correct": 31,
+        "accuracy": 0.96875,
+        "macro_f1": 0.9682539682539683,
+        "per_class": [
+          {
+            "class_id": "coffee",
+            "support": 4,
+            "precision": 0.8,
+            "recall": 1,
+            "f1": 0.888888888888889
+          },
+          {
+            "class_id": "milk",
+            "support": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "sleep_v1",
+            "support": 4,
+            "precision": 1,
+            "recall": 0.75,
+            "f1": 0.8571428571428571
+          },
+          {
+            "class_id": "sleep_v2",
+            "support": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "sleep_v3",
+            "support": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "sleep_v4",
+            "support": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "cold",
+            "support": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          {
+            "class_id": "thanks",
+            "support": 4,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          }
+        ],
+        "confusion_matrix_rows_actual_columns_predicted": [
+          [
+            4,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            4,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            4
+          ]
+        ]
+      },
+      "dataset_sha256": "63a73a032002376dcfccd350e60774d2402fd40609efae3a22ae3871d5d77b7d",
+      "target": "8-class exploratory kNN fixed split, separate from mobile r0006"
+    }
+  ]
+}

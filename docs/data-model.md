@@ -77,3 +77,40 @@ erDiagram
 | 집계 스냅샷 | 여러 원장 이벤트로 계산한 통계의 저장 결과 |
 | Kafka 오프셋 | 특정 파티션에서 메시지가 차지하는 위치 |
 | 체크포인트 | Spark가 소비 위치·처리 상태를 이어가는 데 사용하는 저장 상태 |
+
+
+## 영상 작업 실습의 데이터 관계
+
+아래는 포함된 실습 코드의 작업·Outbox·결과·통계 관계입니다. 앞의 모바일 원장 네 필드와는 별도 저장 모델입니다. 화살표는 ID를 통한 논리적 연결이며 MongoDB의 외래 키 제약을 뜻하지 않습니다.
+
+```mermaid
+erDiagram
+    ASYNC_JOB ||--o| RESULT_LEDGER : "작업 ID로 최종 결과 연결"
+    RESULT_LEDGER }o--o{ WORD_WINDOW : "고유 원장의 계산 관계"
+    ASYNC_JOB {
+        string _id PK "작업 ID"
+        string client_request_id UK "요청 멱등 키"
+        string fingerprint "입력 SHA256"
+        string status "queued processing completed failed"
+        object outbox "요청·결과 발행 대기 상태"
+    }
+    RESULT_LEDGER {
+        string _id PK "결과 event_id"
+        string sequence_id UK "작업 ID"
+        string fingerprint "이벤트 내용 SHA256"
+        object event "원본 결과 이벤트"
+        object source "topic partition offset"
+        datetime event_time "Kafka publish time"
+    }
+    WORD_WINDOW {
+        string _id PK "창 시작과 클래스 복합 키"
+        string class_id "분류 후보"
+        datetime window_start "1분 시작"
+        datetime window_end "1분 끝"
+        int count "고유 원장에서 계산한 절대값"
+    }
+```
+
+작업 문서와 Outbox를 함께 저장하고 결과 원장에는 sequence_id 고유 인덱스를 둡니다. 통계는 동일 이벤트의 반복 수신을 그대로 더하지 않고 원장으로부터 다시 계산해 갱신하는 코드입니다.
+
+[실습 파이프라인과 복구 결과](prototype-pipeline.md)

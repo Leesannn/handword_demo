@@ -146,3 +146,18 @@ topic의 동등 조건을 먼저 탐색하고 offset 순서를 따라 읽는 구
 - 앱 ZIP의 `ios-board/KSLBoard/Sync/Outbox.swift`, `SyncCenter.swift`, `Engine/BoardModel.swift`, `ios/KSLSign/Core/Segmenter.swift`, `FrameBuilder.swift`를 직접 검토했습니다.
 - 서버 동작·배포·누락 재처리는 제공된 `aws-deployment-and-data-pipeline.md`에 근거합니다.
 - 실제 DB 적용과 시험 수치는 [검증 결과](verification.md)에 정리했습니다.
+
+
+## 개발 과정에서 구현한 데이터 품질·복구 처리
+
+| 구간 | 실제 구현 | 기술적 의미 |
+|---|---|---|
+| 원시 좌표 | NaN·검출 마스크 별도 보관, 영상·출력 해시 대조 | 결측과 실제 0좌표·파생 입력 구분 |
+| 정규화 | 어깨 조건·유효 프레임 검사, 0.02픽셀 복원 오차 기준 | 잘못된 기준 좌표의 전파 방지 |
+| 학습 | 그룹 분할 교집합 검사, validation에서만 k 선택 | 고정 평가 절차·입력 검증 |
+| 작업 접수 | client_request_id 고유 인덱스·입력 fingerprint | 정상 재전송과 동일 키 충돌 구분 |
+| 결과 원장 | event_id·sequence_id·내용 fingerprint | 같은 작업의 결과 중복·내용 변경 검사 |
+| Spark 출력 | 고유 원장의 절대값 재계산·bulk upsert | 중복 3회 전달·재시작 시 결과 대조 |
+| 처리 자원 | 100개 입력 제한, local[1]·셔플 1, cache 해제 | 소규모 실습의 배치·메모리 사용 범위 고정 |
+
+수행한 시험 조건과 결과는 [실습 파이프라인](prototype-pipeline.md), [학습·평가](model-development.md), [MediaPipe 구현](mediapipe-development.md)에 연결했습니다. 여기서의 배치·캐시 설정과 실제 측정한 MongoDB 문서 검사량은 각각의 성과로 제시합니다.

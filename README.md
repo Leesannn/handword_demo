@@ -4,19 +4,23 @@
 
 카메라로 수어 단어를 읽고, 본보기 동작을 따라 연습하며, 학습 기록을 AWS에 수집하는 모바일 팀 프로젝트입니다. iOS와 Android에서 동작 좌표를 추출하고 기기에서 단어를 판정합니다. 서버는 학습 이벤트를 Kafka와 Spark로 처리해 MongoDB 원장과 통계로 보관합니다.
 
-**1차 기술 문서 · 팀 구현·검증 중심 v5 · 2026-11-25 · 개발 및 내부 시험 단계**
+**팀 프로젝트 통합 기술·소스 패키지 v6 · 2026-11-26**
 
-과제의 중심은 앱에서 발생하는 학습 로그를 수집해 이벤트 ID로 추적하고, 시간 구간별 통계로 연결하는 데이터 파이프라인입니다. 교육 화면 하나와 커피·춥다·우유·감사·자다의 제한된 어휘를 대상으로, 모바일 기능과 수집·처리·저장·검증을 함께 설명합니다.
+MediaPipe 좌표 추출·품질 검사와 kNN 학습 실험에서 시작해, 영상 비동기 작업·Kafka·Spark 검사를 거쳐 실제 모바일 학습 이벤트를 AWS MongoDB까지 연결했습니다. 개발 과정의 소스, 현재 앱·서버 구조, 실행 근거를 하나의 저장소에서 추적할 수 있도록 구성했습니다.
 
-| 구성 | 구현 내용 |
+| 구성 | 구현·수행 내용 |
 |---|---|
+| 데이터·학습 실험 | MediaPipe 배치 추출, 결측 마스크·손 배정·정규화, 124시퀀스 분할, kNN·특징 비교 |
+| 비동기 작업 실습 | 작업 API·MongoDB Outbox·Kafka 요청/결과·Spark 1분 집계·재시작 검사 |
 | iOS | SwiftUI 화면, MediaPipe 좌표 추출, Core ML 추론, SceneKit 본보기, 이벤트 재전송 |
 | Android | Expo·React Native 앱, WebView 내부 MediaPipe·JavaScript GRU 추론, 이벤트 재전송 |
 | 서버 | Caddy HTTPS, FastAPI 이벤트 배치 API, Kafka, Spark Structured Streaming |
 | DB·네트워크 | 별도 AWS 계정의 EC2 MongoDB, PrivateLink, TLS 인증, 이벤트 원장·집계 저장 |
 | 실제 연동 | 아이폰·안드로이드 학습 기록의 MongoDB 도착과 아이폰 2대 동시 사용 시험 |
 
-실제 서비스 적용과 측정 근거를 함께 기록합니다. 핵심 확인 결과는 두 아이폰의 이벤트 총 17건 저장, 최근 조회의 문서 검사 73→10, 제공 Android 기준 데이터의 전처리·확률 재검증 통과입니다. 자세한 조건은 [검증 결과](docs/verification.md)와 [측정 근거](evidence/README.md)에 있습니다.
+핵심 결과는 124시퀀스의 고정 분할 학습·평가, 영상 작업 API 12개·단어 회귀 18개 검사, 두 아이폰 이벤트 17건 저장, MongoDB 검사 문서 73→10, 모바일 엔진 기준 계산 일치입니다. 직접 실행·저장된 과거 결과·담당자 보고를 구분해 [검증 결과](docs/verification.md)와 [측정 근거](evidence/README.md)에 연결했습니다.
+
+기준 저장소는 [팀원 PR #1·#2가 병합된 main](https://github.com/Shinkyeongho/handword_demo/tree/563dea74fdc3cfd60244da472bdeae4a5f6b58fa)입니다. 앱 담당자의 실기기 확인과 서버 담당자의 README 정리 내용을 유지했습니다.
 
 ## 목차
 
@@ -25,10 +29,12 @@
 - [사용자 기능](#사용자-기능)
 - [전체 아키텍처](#전체-아키텍처)
 - [기술 스택과 선택](#기술-스택과-선택)
+- [MediaPipe 개발과 모델 실험](#mediapipe-개발과-모델-실험)
 - [모델과 좌표 처리](#모델과-좌표-처리)
 - [학습 이벤트 수집](#학습-이벤트-수집)
 - [MongoDB 저장과 최적화](#mongodb-저장과-최적화)
 - [데이터 모델과 ERD](#데이터-모델과-erd)
+- [비동기 작업·복구 검증](#비동기-작업복구-검증)
 - [예외 처리와 운영 개선](#예외-처리와-운영-개선)
 - [검증 결과](#검증-결과)
 - [역할과 협업](#역할과-협업)
@@ -116,6 +122,46 @@ flowchart TD
 기술별 배포 구조와 판단은 [아키텍처 문서](docs/architecture.md)에 정리했습니다.
 
 처음 보는 독자는 [데이터 흐름도](docs/data-flow.md)에서 앱 내부 처리, 서버 수락, MongoDB 적재, 오류 조사 순서를 볼 수 있습니다.
+
+## MediaPipe 개발과 모델 실험
+
+카메라 검출 결과를 곧바로 학습시키지 않고, 원시 좌표·손 배정·정규화·시간 길이·결측 마스크·분할을 단계별로 검사하는 코드를 작성했습니다.
+
+```mermaid
+flowchart LR
+    C[기준 영상·직접 녹화] --> R[MediaPipe 손·Pose 추출]
+    R --> H[손 배정·59점 XYZ·유효 마스크]
+    H --> N[어깨 중심·너비 정규화]
+    N --> T[라벨 구간·30프레임 선택]
+    T --> Q[입력·해시·분할 검사]
+    Q --> K[kNN 학습·특징 비교]
+    K --> V[영상 작업 API·Kafka·Spark 회귀 검사]
+```
+
+| 기술 과제 | 구현 내용 | 코드 |
+|---|---|---|
+| 녹화 시각·파일 관리 | 실제 프레임 시각으로 FPS 계산, 프레임 크기 검사·임시 파일 저장 | [record_webcam_clip.py](experiments/03_실습코드/record_webcam_clip.py) |
+| 손 슬롯 안정화 | 라벨·이전 손목 위치로 배정, 모호한 후보 보류 | [track_hands_v2_experiment.py](experiments/03_실습코드/track_hands_v2_experiment.py) |
+| 좌표·결측 분리 | 원시 XYZ·NaN·검출 마스크와 학습용 0 채움을 구분 | [build_mediapipe177_pilot.py](experiments/03_실습코드/build_mediapipe177_pilot.py) |
+| 기준 좌표 정규화 | 어깨 중심·너비 정규화와 복원 오차 검사 | [normalize_mediapipe177_pilot.py](experiments/03_실습코드/normalize_mediapipe177_pilot.py) |
+| 시간 길이 통일 | 30개 프레임을 선택하고 원본 인덱스·시각 보존 | [resample_xy30_pilot.py](experiments/03_실습코드/resample_xy30_pilot.py) |
+| 학습 입력 검증 | 124개 시퀀스·라벨·분할·배열·파일 해시 대조 | [prepare_mediapipe_baseline.py](experiments/03_실습코드/prepare_mediapipe_baseline.py) |
+| 모델 선택·평가 | validation에서 k 선택, test 고정 평가·혼동 행렬·저장 후 재예측 | [train_aihub_knn.py](experiments/03_실습코드/train_aihub_knn.py) |
+
+### 학습 실험의 결과와 해석
+
+촬영 코드 그룹으로 train 76·validation 16·test 32를 분리하고, k=1·3·5 중 validation 기준으로 선택했습니다.
+
+| 기준선 | 입력 | validation | test | test macro F1 |
+|---|---|---:|---:|---:|
+| AIHub 2D kNN | 30×150 | 14/16, 87.50% | 30/32, 93.75% | 0.9370 |
+| MediaPipe kNN | 30×177, XY+마스크 | 15/16, 93.75% | 31/32, 96.875% | 0.9683 |
+
+두 결과는 동일한 8개 임시 클래스·고정 분할 실험의 저장 결과입니다. 현재 앱의 r0006 GRU 성능 수치와 구분합니다. 촬영 코드 분할의 단위를 사람 독립 평가로 확대 해석하지 않습니다.
+
+**입력 차원뿐 아니라 특징의 의미를 관리했습니다.** 실험의 177값은 XY 118+마스크 59이고 모바일 모델은 59점 XYZ입니다. 손목 상대화·손목 위치 추가 실험은 183값입니다. 같은 크기의 배열도 전처리 버전·손 슬롯·좌표계가 다르면 별도 계약으로 다룹니다.
+
+[MediaPipe 구현 상세](docs/mediapipe-development.md) · [학습·평가 상세](docs/model-development.md) · [학습 결과 JSON](evidence/model-development.json)
 
 ## 모델과 좌표 처리
 
@@ -211,6 +257,24 @@ erDiagram
 
 집계는 여러 원장 이벤트에서 계산합니다. 원장 구조와 이벤트 간 연결은 [데이터 모델 문서](docs/data-model.md)에 정리했습니다.
 
+## 비동기 작업·복구 검증
+
+실제 모바일 로그 경로와 별도로, 영상·특징 입력을 비동기 작업으로 처리하는 실습 코드를 구현했습니다. 작업과 Outbox를 같은 MongoDB 문서에 기록하고 Kafka의 requested·completed·failed 토픽으로 처리 단계를 연결했습니다.
+
+Spark 시제품은 foreachBatch에서 이벤트의 종류·버전·필수 ID를 검사하고, event_id 고유 원장·fingerprint로 재전달을 처리합니다. 고유 원장에서 통계 절대값을 재계산하고 bulk upsert로 갱신합니다. 1분 집계는 F.window를 사용하며 실습 시간 기준은 Kafka publish timestamp입니다.
+
+| 확인한 동작 | 저장된 결과 |
+|---|---|
+| 영상 접수·동일 요청·잘못된 구간·없는 파일 | HTTP 201·202·200·409·422·404 등 12개 검사 통과 |
+| 완료 이벤트 3회 재전달 | 고유 원장·누적·1분 창과 원장 시각 유지 |
+| 우유·감사·춥다 고정 영상 | 단어당 6개, 총 18개 회귀 검사 통과 |
+| 워커 중단 후 재개 | 대기 작업의 동일 ID·결과·추론 1회 유지 |
+| Spark 중단 후 재개 | 같은 체크포인트에서 중단 중 쌓인 1건 반영·기존 기록 보존 |
+
+이 실습의 녹화·영상 업로드는 개발 검사용 경로입니다. 현재 모바일 앱은 기기 내 추론 후 학습 로그를 전송합니다.
+
+[Kafka·Spark·작업 상태·복구 상세](docs/prototype-pipeline.md) · [실행 결과 요약](evidence/pipeline-regression.json)
+
 ## 예외 처리와 운영 개선
 
 | 문제 | 구현·조치 | 근거 |
@@ -258,6 +322,7 @@ erDiagram
 
 | 역할 | 기여 |
 |---|---|
+| 데이터·파이프라인 개발 | 직접 녹화·MediaPipe 추출·손 배정·특징 변환·kNN 학습·평가, 영상 작업·Kafka·Spark·복구 실습 |
 | 앱·추론 담당 | iOS·Android 앱, 좌표 전처리와 r0006 추론 연동, 학습 UI·본보기, Outbox·재전송, 이벤트 규격 |
 | 메인 서버 담당 | EC2·Docker, Caddy HTTPS, FastAPI 입력 검증, Kafka·Spark 상시 작업, 집계·재처리·재시작 운영 |
 | DB·계정 간 연결 담당 | EC2 MongoDB, PrivateLink 제공 경로, TLS·인증 접속 검증, 원장 직접 대조, 조회 인덱스, DB 예외 시험·인수인계 |
@@ -268,10 +333,14 @@ erDiagram
 
 ## 실행 및 문서
 
-이 패키지는 팀이 구현·수행한 내용을 정리한 설명 문서와 측정 근거로 구성됩니다.
+이 패키지는 모바일 소스·실습 코드·실행 구성·서버 배포 보고·기술 문서·측정 근거로 구성됩니다. 경로별 역할과 의존성은 [소스 안내](docs/source-map.md)에 있습니다.
 
 | 문서 | 내용 |
 |---|---|
+| [소스·실행 안내](docs/source-map.md) | 실험·모바일·서버 코드 경계, 실행 단위, 출처·해시 |
+| [MediaPipe 개발](docs/mediapipe-development.md) | 손 배정·결측·정규화·30프레임·입력 계약 |
+| [학습·평가](docs/model-development.md) | 124개 분할·kNN·특징 비교·평가 해석 |
+| [비동기 작업·복구](docs/prototype-pipeline.md) | 작업 API·Outbox·Kafka·1분 집계·중단 복구 |
 | [강사 요구사항 대응](docs/instructor-requirements.md) | 강사 과제와 연결되는 실제 팀 수행 내용 |
 | [스트리밍 처리 명세](docs/streaming-semantics.md) | Kafka 토픽·키, Spark 소비·집계·체크포인트, 누락 재처리 |
 | [아키텍처](docs/architecture.md) | 앱 추론·수집·계정 간 연결·설계 판단 |
@@ -288,9 +357,13 @@ erDiagram
 | [발표 진행안](docs/presentation.md) | 팀 발표 흐름·시연 순서·예상 질문 |
 | [게시 검토](docs/release-review.md) | 파일·권리·설정 정리와 근거 목록 |
 
-iOS는 제공 소스의 `ios-board/KSLBoard.xcworkspace`를 macOS·Xcode에서 엽니다. 의존성 재구성은 XcodeGen·CocoaPods를 사용합니다. Android는 제공 소스의 `expo-board`에서 `npm install`, `npm run engine`, `npm test`를 사용하며, 실행 방식에 따라 Expo Go 또는 APK 빌드를 선택합니다. 모델·본보기 자원의 공개 범위는 [게시 검토](docs/release-review.md)에 정리했습니다. 모바일 빌드를 새로 실행한 결과와 문서 작성 중 수행한 순수 엔진 계산 재검증은 구분합니다.
+iOS 코드는 mobile/ios, Android 코드는 mobile/android, Python 실험은 experiments에 있습니다. 모델·본보기·데이터 자원은 원본 이용 조건에 따라 별도로 관리합니다. 코드 스냅샷과 최신 앱 담당자 확인의 시점은 [소스 안내](docs/source-map.md), 기술 자료와 파일 구성은 [게시 범위](docs/release-review.md)에 정리했습니다.
 
 ## 팀 수행 결과
+
+- MediaPipe 원시 좌표·손 배정·품질·정규화·프레임 선택과 124개 학습 데이터 구성
+- NumPy kNN·손목 상대 특징 실험, 고정 분할 평가·모델 저장 재검증
+- 영상 비동기 API·MongoDB Outbox·Kafka·Spark 1분 통계·중단 복구 실습
 
 - iOS·Android 앱과 실제 모바일 학습 이벤트의 AWS MongoDB 적재 확인
 - HTTPS API → Kafka → 상시 Spark → PrivateLink → MongoDB 연결

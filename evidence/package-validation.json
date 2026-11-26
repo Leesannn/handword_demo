@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-26",
+  "kind": "integration package checks actually executed",
+  "runtime": {
+    "python": "3.12.14",
+    "numpy": "2.3.5"
+  },
+  "synthetic_feature_tests": {
+    "command": "python -m unittest discover -s tests -v",
+    "passed": 7,
+    "scope": [
+      "normalization round trip and missing mask",
+      "30-frame source index/time preservation",
+      "disconnected interval rejection",
+      "relative hands and 183-feature shape",
+      "invalid mask rejection",
+      "deterministic kNN tie and confusion matrix",
+      "timestamp-based FPS"
+    ]
+  },
+  "android_fixture_rerun": {
+    "passed": true,
+    "fixture_count": 1,
+    "source_zip_sha256": "87108b6b04d9cd6423bd47169a76e598d8e8dff8b1016170e3ea6d172fbe22bc",
+    "preprocessing_max_abs_error": 2.384185791015625e-07,
+    "probability_max_abs_error": 7.644642940896063e-08,
+    "word": "감사",
+    "execution": "Node.js provided tools/test_core.mjs on the supplied archive"
+  },
+  "historical_metric_audit": {
+    "experiments": 2,
+    "checks": [
+      "confusion matrix totals and diagonal",
+      "correct/sample accuracy equality",
+      "capture-code split disjointness"
+    ]
+  },
+  "credential_pattern_scan": {
+    "findings": 0,
+    "patterns": [
+      "private key blocks",
+      "AWS access key format",
+      "credential-bearing MongoDB URI",
+      "long literal key/password assignments"
+    ]
+  },
+  "evidence_scope": "Historical service reports are separate from these syntax, data-metric and synthetic-function checks.",
+  "static_package_checks": {
+    "python_syntax_files": 104,
+    "javascript_syntax_files": 5,
+    "json_files": 12,
+    "markdown_files": 24,
+    "local_links": 132,
+    "source_hashes": 180,
+    "status": "passed"
+  }
+}

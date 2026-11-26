@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>수어 칠판 엔진</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #14110f; overflow: hidden; }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  video { position: absolute; width: 2px; height: 2px; opacity: 0; pointer-events: none; }
+  #note { position: absolute; left: 0; right: 0; top: 45%; text-align: center; color: #f4efe6;
+    font: 600 16px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; padding: 0 24px; }
+</style>
+<!--WEB_HEAD-->
+</head>
+<body>
+<video id="v" playsinline muted autoplay></video>
+<canvas id="c"></canvas>
+<div id="note">준비하는 중</div>
+<!--WEB_BODY-->
+<script>/*CORE*/</script>
+<script>window.KSL_MODEL = /*MODEL*/null;</script>
+<script type="module">
+// 카메라 화면에서 손·몸 좌표를 뽑아(MediaPipe) 동작 구간을 정하고 모델로 판정한 뒤, 결과를 앱(React Native)에 알린다.
+// 아이폰 앱의 LandmarkDetector·FrameOrienter·BoardModel이 하던 일이다.
+const MP = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';
+const HAND_URL = 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task';
+const POSE_URL = 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task';
+const FRAME_MS = 1000 / 15;
+const ASSETS = window.KSL_ASSETS || '';   // 앱 안에 든 파일의 자리 (없으면 CDN에서 받는다)
+const KSL = window.KSL, model = window.KSL_MODEL;
+const video = document.getElementById('v'), canvas = document.getElementById('c'), note = document.getElementById('note');
+const ctx = canvas.getContext('2d', { willReadFrequently: false });
+const query = new URLSearchParams(location.search);
+
+const send = (message) => {
+  if (window.KSLOnMessage) window.KSLOnMessage(message);   // 화면이 같은 페이지에 있다 (웹앱, 앱)
+  else if (window.ReactNativeWebView) window.ReactNativeWebView.postMessage(JSON.stringify(message));
+  else (window.KSL_LOG = window.KSL_LOG || []).push(message);
+};
+const say = (text) => { note.textContent = text; note.style.display = text ? 'block' : 'none'; send({ type: 'status', text }); };
+const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (ch) => {
+  const r = Math.random() * 16 | 0; return (ch === 'x' ? r : (r & 3) | 8).toString(16);
+}));
+
+const segmenter = new KSL.Segmenter(query.get('mode') || 'button');
+// 속도 조절 값. 시험할 때는 주소에 ?hands=4&poses=2&delegate=CPU처럼 붙이거나 window.KSL_TUNE으로 바꾼다
+const TUNE = Object.assign({ hands: 2, poses: 1, delegate: 'GPU', poseDelegate: 'GPU', worker: true, together: !!query.get('video') }, window.KSL_TUNE || {});
+for (const k of ['hands', 'poses']) if (query.get(k)) TUNE[k] = Number(query.get(k));
+if (query.get('delegate')) TUNE.delegate = query.get('delegate');
+if (query.get('poseDelegate')) TUNE.poseDelegate = query.get('poseDelegate');
+if (query.get('worker')) TUNE.worker = query.get('worker') !== '0';
+let delegate = '', perf = { n: 0, draw: 0, hands: 0, pose: 0, wait: 0, rest: 0, since: 0 }, workers = null, workerFail = '', busy = false, paused = false, poseBusy = false, latestPose = null, poseTook = 0;
+let detectors = null, facing = 'user', stream = null, running = false, lastRun = 0, lastTell = 0, lastMs = -1, keepClips = false;
+
+let clock = () => performance.now() / 1000;   // 영상 파일로 시험할 때는 영상의 시각으로 바꾼다
+window.KSLCommand = (c) => {
+  if (c.type === 'mode') segmenter.setMode(c.mode);
+  else if (c.type === 'start') { segmenter.start(clock()); if (segmenter.recording) send({ type: 'started' }); }
+  else if (c.type === 'stop') handle(segmenter.stop(clock()));
+  else if (c.type === 'reset') segmenter.reset();
+  else if (c.type === 'camera') { facing = c.facing; latestPose = null; segmenter.reset(); openCamera().then(() => send({ type: 'camera', facing })).catch(fail); }
+  else if (c.type === 'clips') keepClips = !!c.keep;
+  else if (c.type === 'pause') { paused = !!c.on; if (paused) segmenter.reset(); }   // 카메라가 필요 없는 화면에서는 좌표 뽑기를 쉰다
+};
+
+function fail(error) {
+  const text = String(error && error.name === 'NotAllowedError' ? '카메라 권한이 없습니다. 설정에서 카메라를 허용해 주세요.' : (error && error.message) || error);
+  say(text); send({ type: 'error', text });
+}
+
+async function openCamera() {
+  if (stream) stream.getTracks().forEach((t) => t.stop());
+  const file = query.get('video');   // 시험용: 카메라 대신 영상 파일을 읽는다
+  if (file) { video.src = file; video.loop = false; }
+  else {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: facing, width: { ideal: 640 }, height: { ideal: 480 } } });
+    video.srcObject = stream;
+  }
+  await video.play();
+}
+
+// 손과 몸을 찾는 일을 화면과 다른 실(worker) 두 개에서 한다. 한 번 찾는 데 40ms쯤 걸려서,
+// 화면과 같은 실에서 하면 그동안 화면이 멈추고(누름이 늦고 그림이 끊긴다), 손과 몸을 차례로 하면 초당 11장밖에 못 읽는다.
+// 따로 돌리면 화면은 멈추지 않고, 손과 몸을 함께 찾아 한 장에 드는 시간도 절반이 된다.
+const WORKER = `
+var V = exports.FilesetResolver ? exports : module.exports, det = null;
+onmessage = async function (e) {
+  var m = e.data;
+  if (m.type === 'init') {
+    try {
+      var files = m.fileset;
+      var make = function (delegate) {
+        var base = typeof m.model === 'string' ? { modelAssetPath: m.model, delegate: delegate } : { modelAssetBuffer: new Uint8Array(m.model), delegate: delegate };
+        return m.kind === 'hands'
+          ? V.HandLandmarker.createFromOptions(files, { baseOptions: base, canvas: new OffscreenCanvas(1, 1), runningMode: 'VIDEO', numHands: m.count,
+              minHandDetectionConfidence: 0.5, minHandPresenceConfidence: 0.5, minTrackingConfidence: 0.5 })
+          : V.PoseLandmarker.createFromOptions(files, { baseOptions: base, canvas: new OffscreenCanvas(1, 1), runningMode: 'VIDEO', numPoses: m.count });
+      };
+      var delegate = m.delegate;
+      try { det = await make(delegate); } catch (err) { delegate = 'CPU'; det = await make('CPU'); }
+      postMessage({ type: 'ready', delegate: delegate });
+    } catch (err) { postMessage({ type: 'fail', text: String(err && err.message || err) }); }
+  } else if (m.type === 'frame') {
+    var t0 = performance.now(), r = null, error = null;
+    try { r = det.detectForVideo(m.bitmap, m.ms); } catch (err) { error = String(err && err.message || err); }
+    m.bitmap.close();
+    postMessage({ type: 'result', id: m.id, error: error, ms: performance.now() - t0, landmarks: r ? r.landmarks : [], handedness: r ? (r.handedness || r.handednesses || []) : [] });
+  }
+};`;
+
+// 라이브러리 글을 받아 worker 글 앞에 붙인다 (CDN이 .cjs 파일을 스크립트가 아닌 종류로 내줘서 worker가 직접 불러오지 못한다)
+function startWorker(kind, model, count, library, fileset) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(new Blob(['var MP = ' + JSON.stringify(MP) + ', exports = {}, module = { exports: exports };\n', library, '\n', WORKER], { type: 'text/javascript' }));
+    const worker = new Worker(url), waiting = new Map();
+    let next = 0;
+    const timer = setTimeout(() => reject(new Error(kind + ' 준비 시간 초과')), 40000);
+    worker.onerror = (e) => { clearTimeout(timer); reject(new Error(e.message || 'worker 오류')); };
+    worker.onmessage = (e) => {
+      const m = e.data;
+      if (m.type === 'ready') { clearTimeout(timer); resolve({ delegate: m.delegate, stop: () => worker.terminate(),
+        detect: (bitmap, ms) => new Promise((done) => { const id = ++next; waiting.set(id, done); worker.postMessage({ type: 'frame', id, bitmap, ms }, [bitmap]); }) }); }
+      else if (m.type === 'fail') { clearTimeout(timer); reject(new Error(m.text)); }
+      else if (m.type === 'result') { const done = waiting.get(m.id); waiting.delete(m.id); if (done) done(m); }
+    };
+    worker.postMessage({ type: 'init', kind, model, count, fileset, delegate: kind === 'poses' ? TUNE.poseDelegate : TUNE.delegate });
+  });
+}
+
+// 좌표를 뽑는 데 필요한 것들을 준비한다: 라이브러리(페이지에 들어 있다), 계산 파일(wasm), 손·몸 모델.
+// 앱 안에 파일이 있으면(window.KSL_ASSETS) 거기서 읽어 인터넷 없이도 켜지고, 없으면(웹앱) CDN에서 받는다
+function readLocal(name, type) {
+  // 앱 안의 파일(file://)은 fetch로 못 읽어서 XMLHttpRequest를 쓴다
+  return new Promise((resolve, reject) => {
+    const x = new XMLHttpRequest();
+    x.open('GET', ASSETS + name); x.responseType = type;
+    x.onload = () => (x.response ? resolve(x.response) : reject(new Error(name + ' 파일이 비어 있습니다')));
+    x.onerror = () => reject(new Error(name + ' 파일을 읽지 못했습니다'));
+    x.send();
+  });
+}
+async function prepare() {
+  const library = window.KSL_MP_LIB || await (await fetch(MP + '/vision_bundle.cjs')).text();
+  if (!ASSETS) return { library, fileset: { wasmLoaderPath: MP + '/wasm/vision_wasm_internal.js', wasmBinaryPath: MP + '/wasm/vision_wasm_internal.wasm' }, hand: HAND_URL, pose: POSE_URL };
+  const [loader, binary, hand, pose] = await Promise.all([readLocal('vision_wasm_internal.js', 'blob'), readLocal('vision_wasm_internal.wasm', 'blob'),
+    readLocal('hand_landmarker.task', 'arraybuffer'), readLocal('pose_landmarker_lite.task', 'arraybuffer')]);
+  return { library, hand, pose, fileset: { wasmLoaderPath: URL.createObjectURL(new Blob([loader], { type: 'text/javascript' })), wasmBinaryPath: URL.createObjectURL(new Blob([binary], { type: 'application/wasm' })) } };
+}
+
+async function load() {
+  say(ASSETS ? '준비하는 중' : '손 좌표 모델을 내려받는 중 (처음 한 번은 조금 걸립니다)');
+  const kit = await prepare();
+  if (TUNE.worker && typeof Worker !== 'undefined' && typeof OffscreenCanvas !== 'undefined' && typeof createImageBitmap === 'function') {
+    try {
+      const [hands, poses] = await Promise.all([startWorker('hands', kit.hand, TUNE.hands, kit.library, kit.fileset), startWorker('poses', kit.pose, TUNE.poses, kit.library, kit.fileset)]);
+      workers = { hands, poses }; delegate = hands.delegate + '/' + poses.delegate + '·따로';
+    } catch (e) { workers = null; workerFail = e.message; console.warn('따로 돌리지 못해 화면과 같은 실에서 돈다:', e.message); }
+  }
+  if (!workers) {
+    // 화면과 같은 실에서 돈다 (worker를 못 쓰는 브라우저). 같은 라이브러리 글을 여기서 읽어 들인다
+    const box = { exports: {} };
+    new Function('exports', 'module', kit.library)(box.exports, box);
+    const { HandLandmarker, PoseLandmarker } = box.exports.FilesetResolver ? box.exports : box.exports.default || box.exports;
+    const base = (model, kind) => (typeof model === 'string' ? { modelAssetPath: model, delegate: kind } : { modelAssetBuffer: new Uint8Array(model.slice(0)), delegate: kind });
+    const make = async (kind) => ({
+      hands: await HandLandmarker.createFromOptions(kit.fileset, { baseOptions: base(kit.hand, kind), runningMode: 'VIDEO',
+        numHands: TUNE.hands, minHandDetectionConfidence: 0.5, minHandPresenceConfidence: 0.5, minTrackingConfidence: 0.5 }),
+      poses: await PoseLandmarker.createFromOptions(kit.fileset, { baseOptions: base(kit.pose, kind), runningMode: 'VIDEO', numPoses: TUNE.poses }),
+    });
+    try { detectors = await make(TUNE.delegate); delegate = TUNE.delegate; } catch (e) { detectors = await make('CPU'); delegate = 'CPU'; }
+  }
+  say('카메라를 여는 중');
+  await openCamera();
+  say('');
+  running = true;
+  send({ type: 'ready', classes: model.classes, run: model.run });
+  if (query.get('wait')) { clock = () => 1; window.KSLRunFile = runFile; }   // 시험용: 밖에서 부를 때 영상을 읽는다
+  else if (query.get('video')) runFile().catch(fail);
+  else { setInterval(tick, 16); watchCamera(); }
+}
+
+// 화면 갱신(requestAnimationFrame)은 웹뷰가 가려지면 멈추므로 타이머로 돈다
+function tick() {
+  if (!running || paused || busy) return;
+  const now = performance.now();
+  if (now - lastRun < FRAME_MS - 4 || video.readyState < 2 || !video.videoWidth) return;
+  lastRun = now;
+  busy = true;
+  step(now).catch(() => {}).finally(() => { busy = false; });
+}
+
+// 시험용: 영상 파일을 1/15초씩 넘기며 읽는다 (실제 시간과 상관없이 같은 결과가 나온다)
+async function runFile() {
+  video.pause();
+  for (let t = 0; t < video.duration; t += 1 / 15) {
+    video.currentTime = t;
+    await new Promise((done) => video.addEventListener('seeked', done, { once: true }));
+    clock = () => 1 + t;
+    await step(1000 + t * 1000);
+  }
+  for (let i = 1; i <= 8; i++) { ctx.fillStyle = '#000'; ctx.fillRect(0, 0, canvas.width, canvas.height); stepBlank(1000 + (video.duration + i / 15) * 1000); }
+  send({ type: 'fileDone' });
+}
+function stepBlank(now) { handle(segmenter.add(now / 1000, new Array(KSL.VALUES).fill(NaN), false)); }
+
+// 카메라가 장면을 찍은 때부터 우리가 그 장면을 받는 때까지의 지연(ms). 웹뷰가 알려 줄 때만 잰다
+let camLag = null, camFps = 0, camCount = 0, camSince = 0;
+function watchCamera() {
+  if (!video.requestVideoFrameCallback) return;
+  const onFrame = (at, meta) => {
+    if (meta && meta.captureTime) camLag = at - meta.captureTime;
+    camCount++; if (at - camSince > 2000) { camFps = Math.round(camCount / ((at - camSince) / 1000)); camCount = 0; camSince = at; }
+    video.requestVideoFrameCallback(onFrame);
+  };
+  video.requestVideoFrameCallback(onFrame);
+}
+
+async function step(now) {
+  // 긴 쪽을 640으로 줄이고 좌우를 뒤집어, 학습 때와 같은 셀카 화면을 만든다
+  const scale = Math.min(1, 640 / Math.max(video.videoWidth, video.videoHeight));
+  const w = Math.round(video.videoWidth * scale), h = Math.round(video.videoHeight * scale);
+  if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+  const t0 = performance.now();
+  ctx.setTransform(-1, 0, 0, 1, w, 0);
+  ctx.drawImage(video, 0, 0, w, h);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  const ms = Math.max(lastMs + 1, Math.round(now));
+  lastMs = ms;
+  let hr, pr, handMs = 0, poseMs = 0;
+  if (workers) {
+    const t1 = performance.now();
+    if (TUNE.together) {
+      // 시험용: 손과 몸을 같은 장면에서 뽑을 때까지 기다린다 (영상 파일 시험이 늘 같은 결과를 내게)
+      const [a, b] = await Promise.all([createImageBitmap(canvas), createImageBitmap(canvas)]);
+      [hr, pr] = await Promise.all([workers.hands.detect(a, ms), workers.poses.detect(b, ms)]);
+      if (pr.error) return;
+    } else {
+      // 손은 장면마다 바로 뽑고, 몸은 따로 돌려 가장 최근에 뽑힌 것을 쓴다. 몸은 손보다 느리게 움직이고 뽑는 데 더 오래 걸려서,
+      // 둘을 같이 기다리면 손의 반응까지 늦어진다. 몸이 한두 장 늦어도 판정은 거의 같다 (tools/test_slow_frames.mjs)
+      if (!poseBusy) {
+        poseBusy = true;
+        createImageBitmap(canvas).then((b) => workers.poses.detect(b, ms)).then((r) => { if (!r.error) { latestPose = r; poseTook = r.ms; } }).catch(() => {}).finally(() => { poseBusy = false; });
+      }
+      hr = await workers.hands.detect(await createImageBitmap(canvas), ms);
+      pr = latestPose || { landmarks: [] };
+    }
+    if (hr.error) return;
+    handMs = hr.ms; poseMs = TUNE.together ? pr.ms : poseTook; perf.draw += t1 - t0; perf.wait += performance.now() - t1;
+  } else {
+    const t1 = performance.now();
+    try { hr = detectors.hands.detectForVideo(canvas, ms); handMs = performance.now() - t1; pr = detectors.poses.detectForVideo(canvas, ms); } catch (e) { return; }
+    poseMs = performance.now() - t1 - handMs; perf.draw += t1 - t0; perf.wait += handMs + poseMs;
+  }
+  const t3 = performance.now();
+  const sides = hr.handedness || hr.handednesses || [];
+  const hands = (hr.landmarks || []).map((points, i) => ({ points, label: sides[i] && sides[i][0] && sides[i][0].categoryName, score: sides[i] && sides[i][0] ? sides[i][0].score : 0 }));
+  const frame = KSL.buildFrame(hands, pr.landmarks || [], w, h);
+  const time = now / 1000;
+  handle(segmenter.add(time, frame.values, frame.hands > 0), w / h);
+  // 화면이 따로 있으면(웹앱·앱) 좌표를 그쪽에 넘겨 사람 도식을 그리게 하고, 없으면 여기서 점만 찍는다
+  if (window.KSLOnFrame) window.KSLOnFrame({ values: frame.values, person: !!frame.person, hands: frame.hands, width: w, height: h, time,
+    recording: segmenter.recording, elapsed: segmenter.recording ? Math.min(KSL.MAX_SECONDS, time - segmenter.startTime) : 0, facing });
+  else draw(frame.values, w, h);
+  // 속도 재기: 2초마다 한 장에 든 시간(ms)의 평균을 알린다. wait는 좌표를 기다린 시간, ui는 화면을 그린 시간이다
+  const t4 = performance.now();
+  perf.n++; perf.hands += handMs; perf.pose += poseMs; perf.rest += t4 - t3;
+  if (t4 - perf.since > 2000) {
+    const r = (v) => Math.round(v / perf.n * 10) / 10;
+    const info = { type: 'perf', delegate, fps: Math.round(perf.n / ((t4 - perf.since) / 1000) * 10) / 10, draw: r(perf.draw), hands: r(perf.hands), pose: r(perf.pose),
+      wait: r(perf.wait), ui: r(perf.rest), fail: workerFail || undefined, camLag: camLag == null ? undefined : Math.round(camLag), camFps, track: (() => { try { const t = stream.getVideoTracks()[0].getSettings(); return t.width + 'x' + t.height + '@' + Math.round(t.frameRate); } catch (e) { return undefined; } })(), size: w + 'x' + h, found: hands.length + '/' + (pr.landmarks || []).length };
+    if (perf.since && window.ReactNativeWebView) window.ReactNativeWebView.postMessage(JSON.stringify(info));
+    window.KSL_PERF = info;
+    perf = { n: 0, draw: 0, hands: 0, pose: 0, wait: 0, rest: 0, since: t4 };
+  }
+  if (now - lastTell > 200) {
+    lastTell = now;
+    send({ type: 'frame', person: !!frame.person, hands: frame.hands, recording: segmenter.recording,
+      elapsed: segmenter.recording ? Math.min(KSL.MAX_SECONDS, time - segmenter.startTime) : 0 });
+  }
+}
+
+function handle(event, aspect) {
+  if (!event) return;
+  if (event.type === 'started') return send({ type: 'started' });
+  if (event.type === 'tooShort') return send({ type: 'tooShort', seconds: event.seconds, mode: segmenter.mode });
+  const a = aspect || canvas.width / canvas.height;
+  try {
+    const r = KSL.read(model, event.clip, a);
+    send({ type: 'reading', id: uuid(), mode: segmenter.mode, kind: r.kind, top: r.top, ranking: r.ranking, probabilities: r.probabilities,
+      mirrored: r.mirrored, handMissing: r.handMissing, seconds: r.seconds, aspect: a, facing,
+      rightSeen: r.rightSeen, leftSeen: r.leftSeen, bodySeen: r.bodySeen, alternatives: r.alternatives,
+      clip: keepClips ? { frames: event.clip.frames.map((fr) => fr.map((v) => (Number.isNaN(v) ? null : v))), times: event.clip.times, start: event.clip.start, end: event.clip.end } : undefined });
+  } catch (e) { send({ type: 'error', text: '판정 오류: ' + e.message }); }
+}
+
+// 잡힌 손과 어깨를 화면 위에 그린다. 화면에서는 "Left" 자리(21~41)가 실제 오른손이다
+function draw(values, w, h) {
+  const dot = (i, color, size) => {
+    const x = values[i * 3], y = values[i * 3 + 1];
+    if (Number.isNaN(x)) return;
+    ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x * w, y * h, size, 0, 6.3); ctx.fill();
+  };
+  for (let i = 0; i < 21; i++) { dot(KSL.LEFT_LABEL + i, '#f4d35e', 3.2); dot(KSL.RIGHT_LABEL + i, '#9ad4f5', 3.2); }
+  for (const k of [11, 12, 13, 14]) dot(KSL.POSE + k, 'rgba(244,239,230,.85)', 4);
+}
+
+load().catch(fail);
+</script>
+</body>
+</html>

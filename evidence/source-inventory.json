@@ -1,0 +1,1031 @@
+{
+  "date": "2026-11-26",
+  "remote_baseline": "563dea74fdc3cfd60244da472bdeae4a5f6b58fa",
+  "local_comparison": {
+    "practice_files": 2507,
+    "review_files": 1650,
+    "source_differences": 0,
+    "review_only_source": 0
+  },
+  "archives": [
+    {
+      "name": "수어칠판_아이폰앱.zip",
+      "sha256": "3b2484a3b75952f5ffcc7bbba889712fd34dfeaf09f16f3399e4bd64a12ef185",
+      "source_files": 53
+    },
+    {
+      "name": "수어칠판_안드로이드앱.zip",
+      "sha256": "87108b6b04d9cd6423bd47169a76e598d8e8dff8b1016170e3ea6d172fbe22bc",
+      "source_files": 16
+    }
+  ],
+  "files": [
+    {
+      "destination": "experiments/02_파이프라인/job_api_v0.1_20261106/check_job_service.py",
+      "source": "sign-language-practice/02_파이프라인/job_api_v0.1_20261106/check_job_service.py",
+      "sha256": "a1d3ade387cefeb9c567b34f3d7b883db868affc76be52b67948d4fd9299e941",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/job_api_v0.1_20261106/hand_local_features.py",
+      "source": "sign-language-practice/02_파이프라인/job_api_v0.1_20261106/hand_local_features.py",
+      "sha256": "cbebe9fa1698cb92d4622233b0b323946cd82eef4d0cdfc651e612e4fb2d2444",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/job_api_v0.1_20261106/predict_feature_json.py",
+      "source": "sign-language-practice/02_파이프라인/job_api_v0.1_20261106/predict_feature_json.py",
+      "sha256": "e11c82eda0213d348f15f0b99b6e50b3af5572bf9b0f9a1df411cce9429f0690",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/job_api_v0.1_20261106/requirements.txt",
+      "source": "sign-language-practice/02_파이프라인/job_api_v0.1_20261106/requirements.txt",
+      "sha256": "d5074a05bcc216d1e3adeeed5a6717cd820474ee7aea02fdc888260ae48e4f0e",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/job_api_v0.1_20261106/serve_job_api.py",
+      "source": "sign-language-practice/02_파이프라인/job_api_v0.1_20261106/serve_job_api.py",
+      "sha256": "ecec9badc1456acf94f5ab85d98bd80c841b09c2f33ed9db772338cce6887f17",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/job_api_v0.1_20261106/test_job_api.py",
+      "source": "sign-language-practice/02_파이프라인/job_api_v0.1_20261106/test_job_api.py",
+      "sha256": "2e99caea431fd1997a3afe3d63ad190634af2ae42a9cff6dbde94525bdf4d0c1",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/job_api_v0.1_20261106/train_aihub_knn.py",
+      "source": "sign-language-practice/02_파이프라인/job_api_v0.1_20261106/train_aihub_knn.py",
+      "sha256": "4d3202ae04acbd5fa685f4c70fcc23e2403cdafdaf0b10aa0766bab94920acd3",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/kafka_job_api_v0.1_20261106/hand_local_features.py",
+      "source": "sign-language-practice/02_파이프라인/kafka_job_api_v0.1_20261106/hand_local_features.py",
+      "sha256": "cbebe9fa1698cb92d4622233b0b323946cd82eef4d0cdfc651e612e4fb2d2444",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/kafka_job_api_v0.1_20261106/kafka_job_pipeline.py",
+      "source": "sign-language-practice/02_파이프라인/kafka_job_api_v0.1_20261106/kafka_job_pipeline.py",
+      "sha256": "929c9c52d299b9844cfc4b1bba82bfaa443d02b4eb7f5570553b6bfff157bff3",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/kafka_job_api_v0.1_20261106/predict_feature_json.py",
+      "source": "sign-language-practice/02_파이프라인/kafka_job_api_v0.1_20261106/predict_feature_json.py",
+      "sha256": "e11c82eda0213d348f15f0b99b6e50b3af5572bf9b0f9a1df411cce9429f0690",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/kafka_job_api_v0.1_20261106/requirements.txt",
+      "source": "sign-language-practice/02_파이프라인/kafka_job_api_v0.1_20261106/requirements.txt",
+      "sha256": "d6e32b89db860663f632d2adc487d910f146772512eee1777828ad9def2edf61",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/kafka_job_api_v0.1_20261106/serve_job_api.py",
+      "source": "sign-language-practice/02_파이프라인/kafka_job_api_v0.1_20261106/serve_job_api.py",
+      "sha256": "1391c94d8c702d9b706fa848068c516d329b8ad389b222b9356ed53aa5516086",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/kafka_job_api_v0.1_20261106/serve_mongo_job_api.py",
+      "source": "sign-language-practice/02_파이프라인/kafka_job_api_v0.1_20261106/serve_mongo_job_api.py",
+      "sha256": "0cc199e9fb847aba44f40b52c2614528b1fbb6344b9ba6e385656b74f25109ee",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/kafka_job_api_v0.1_20261106/test_job_api.py",
+      "source": "sign-language-practice/02_파이프라인/kafka_job_api_v0.1_20261106/test_job_api.py",
+      "sha256": "2e99caea431fd1997a3afe3d63ad190634af2ae42a9cff6dbde94525bdf4d0c1",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/kafka_job_api_v0.1_20261106/test_kafka_job_api.py",
+      "source": "sign-language-practice/02_파이프라인/kafka_job_api_v0.1_20261106/test_kafka_job_api.py",
+      "sha256": "beef0f5ec906aeb38e634532a04d7d8757173347ebec986ed42c443eec52677f",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/kafka_job_api_v0.1_20261106/train_aihub_knn.py",
+      "source": "sign-language-practice/02_파이프라인/kafka_job_api_v0.1_20261106/train_aihub_knn.py",
+      "sha256": "4d3202ae04acbd5fa685f4c70fcc23e2403cdafdaf0b10aa0766bab94920acd3",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/mongo_job_api_v0.1_20261106/check_job_service.py",
+      "source": "sign-language-practice/02_파이프라인/mongo_job_api_v0.1_20261106/check_job_service.py",
+      "sha256": "a1d3ade387cefeb9c567b34f3d7b883db868affc76be52b67948d4fd9299e941",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/mongo_job_api_v0.1_20261106/check_mongo_integration.py",
+      "source": "sign-language-practice/02_파이프라인/mongo_job_api_v0.1_20261106/check_mongo_integration.py",
+      "sha256": "1c7097f9e2b3bfb2a6e6943056b7dd5bc1f2724adea7ea6f1ac663320795a618",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/mongo_job_api_v0.1_20261106/hand_local_features.py",
+      "source": "sign-language-practice/02_파이프라인/mongo_job_api_v0.1_20261106/hand_local_features.py",
+      "sha256": "cbebe9fa1698cb92d4622233b0b323946cd82eef4d0cdfc651e612e4fb2d2444",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/mongo_job_api_v0.1_20261106/predict_feature_json.py",
+      "source": "sign-language-practice/02_파이프라인/mongo_job_api_v0.1_20261106/predict_feature_json.py",
+      "sha256": "e11c82eda0213d348f15f0b99b6e50b3af5572bf9b0f9a1df411cce9429f0690",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/mongo_job_api_v0.1_20261106/requirements.txt",
+      "source": "sign-language-practice/02_파이프라인/mongo_job_api_v0.1_20261106/requirements.txt",
+      "sha256": "8542cf3900bfcf5e13833fb2d0a1edb8d4dd1bc47b30647c904e802a46c82dac",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/mongo_job_api_v0.1_20261106/serve_job_api.py",
+      "source": "sign-language-practice/02_파이프라인/mongo_job_api_v0.1_20261106/serve_job_api.py",
+      "sha256": "1391c94d8c702d9b706fa848068c516d329b8ad389b222b9356ed53aa5516086",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/mongo_job_api_v0.1_20261106/serve_mongo_job_api.py",
+      "source": "sign-language-practice/02_파이프라인/mongo_job_api_v0.1_20261106/serve_mongo_job_api.py",
+      "sha256": "0cc199e9fb847aba44f40b52c2614528b1fbb6344b9ba6e385656b74f25109ee",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/mongo_job_api_v0.1_20261106/test_job_api.py",
+      "source": "sign-language-practice/02_파이프라인/mongo_job_api_v0.1_20261106/test_job_api.py",
+      "sha256": "2e99caea431fd1997a3afe3d63ad190634af2ae42a9cff6dbde94525bdf4d0c1",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/mongo_job_api_v0.1_20261106/test_mongo_job_api.py",
+      "source": "sign-language-practice/02_파이프라인/mongo_job_api_v0.1_20261106/test_mongo_job_api.py",
+      "sha256": "228efcc0b5c9c909c15b285fd0c7d015f04fd8c635d4b1e26193e39b88821919",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/mongo_job_api_v0.1_20261106/train_aihub_knn.py",
+      "source": "sign-language-practice/02_파이프라인/mongo_job_api_v0.1_20261106/train_aihub_knn.py",
+      "sha256": "4d3202ae04acbd5fa685f4c70fcc23e2403cdafdaf0b10aa0766bab94920acd3",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/spark_stats_v0.1_20261106/requirements.txt",
+      "source": "sign-language-practice/02_파이프라인/spark_stats_v0.1_20261106/requirements.txt",
+      "sha256": "040d4c58ea5d172f324876abd1be92caac9fd9fe3ee75875ed59e004088879eb",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/spark_stats_v0.1_20261106/spark_recognition_stats.py",
+      "source": "sign-language-practice/02_파이프라인/spark_stats_v0.1_20261106/spark_recognition_stats.py",
+      "sha256": "f6185e5c9c3a5644e12b47f26a7a3e75beed67701a3bec79d3aae16164bd6757",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/spark_stats_v0.1_20261106/test_spark_stats.py",
+      "source": "sign-language-practice/02_파이프라인/spark_stats_v0.1_20261106/test_spark_stats.py",
+      "sha256": "60a95dfe928689eee696e3fb6c9fa8061c8b2a89f2c34c2e476440f8c5566632",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_jobs_v0.1_20261109/kafka_job_pipeline.py",
+      "source": "sign-language-practice/02_파이프라인/video_jobs_v0.1_20261109/kafka_job_pipeline.py",
+      "sha256": "929c9c52d299b9844cfc4b1bba82bfaa443d02b4eb7f5570553b6bfff157bff3",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_jobs_v0.1_20261109/probe_uploaded_video.py",
+      "source": "sign-language-practice/02_파이프라인/video_jobs_v0.1_20261109/probe_uploaded_video.py",
+      "sha256": "dca823b98ace06d71a7c5ce551e3420d96725268d4f24f80b9b4572cd6db9bc7",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_jobs_v0.1_20261109/requirements.txt",
+      "source": "sign-language-practice/02_파이프라인/video_jobs_v0.1_20261109/requirements.txt",
+      "sha256": "70c1fda9ccdadc6c4085f5b2921e7bb13edb4e202251f99590770530dcb0e882",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_jobs_v0.1_20261109/serve_job_api.py",
+      "source": "sign-language-practice/02_파이프라인/video_jobs_v0.1_20261109/serve_job_api.py",
+      "sha256": "1391c94d8c702d9b706fa848068c516d329b8ad389b222b9356ed53aa5516086",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_jobs_v0.1_20261109/serve_mongo_job_api.py",
+      "source": "sign-language-practice/02_파이프라인/video_jobs_v0.1_20261109/serve_mongo_job_api.py",
+      "sha256": "0cc199e9fb847aba44f40b52c2614528b1fbb6344b9ba6e385656b74f25109ee",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_jobs_v0.1_20261109/serve_video_upload.py",
+      "source": "sign-language-practice/02_파이프라인/video_jobs_v0.1_20261109/serve_video_upload.py",
+      "sha256": "b59818518320e82ba2b0f090193fbd4de6b2ca5cf7d5c3f82474e45ca17f5a7c",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_jobs_v0.1_20261109/test_video_jobs.py",
+      "source": "sign-language-practice/02_파이프라인/video_jobs_v0.1_20261109/test_video_jobs.py",
+      "sha256": "fe2b98cfa4aaa7882b7c38eacf3782bceae1bb21d9809c6ca3612399ad85f399",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_jobs_v0.1_20261109/test_video_upload.py",
+      "source": "sign-language-practice/02_파이프라인/video_jobs_v0.1_20261109/test_video_upload.py",
+      "sha256": "d286991dc83949a1b18c972d188332cb182f6c655ff8c43bd238c6597a02161c",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_jobs_v0.1_20261109/video_job_pipeline.py",
+      "source": "sign-language-practice/02_파이프라인/video_jobs_v0.1_20261109/video_job_pipeline.py",
+      "sha256": "f105bdc5d578da805d04c28c7f8de2d784260c54d473ad2095c8a7d92bdd30b1",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_pipeline_v0.1_20261109/build_mediapipe177_pilot.py",
+      "source": "sign-language-practice/02_파이프라인/video_pipeline_v0.1_20261109/build_mediapipe177_pilot.py",
+      "sha256": "3019ee9af9e268492f33c2462c5d963f04b26a8b9ef3848d396d112f0d94529e",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_pipeline_v0.1_20261109/hand_local_features.py",
+      "source": "sign-language-practice/02_파이프라인/video_pipeline_v0.1_20261109/hand_local_features.py",
+      "sha256": "cbebe9fa1698cb92d4622233b0b323946cd82eef4d0cdfc651e612e4fb2d2444",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_pipeline_v0.1_20261109/normalize_mediapipe177_pilot.py",
+      "source": "sign-language-practice/02_파이프라인/video_pipeline_v0.1_20261109/normalize_mediapipe177_pilot.py",
+      "sha256": "61bc9b1a25204fbbd1448a4102faf3b97333357ed723e7c081f72c6818a9e304",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_pipeline_v0.1_20261109/predict_feature_json.py",
+      "source": "sign-language-practice/02_파이프라인/video_pipeline_v0.1_20261109/predict_feature_json.py",
+      "sha256": "e11c82eda0213d348f15f0b99b6e50b3af5572bf9b0f9a1df411cce9429f0690",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_pipeline_v0.1_20261109/predict_mediapipe_video.py",
+      "source": "sign-language-practice/02_파이프라인/video_pipeline_v0.1_20261109/predict_mediapipe_video.py",
+      "sha256": "498eab600d17da73a1218a384cb483e9086e1f7da765dfe69f5a84f0ce1ed06d",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_pipeline_v0.1_20261109/requirements.txt",
+      "source": "sign-language-practice/02_파이프라인/video_pipeline_v0.1_20261109/requirements.txt",
+      "sha256": "548182b16895f3ee7a02ae3beb3e8feb84982e94efe3d976f342d6e9081fb0f2",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_pipeline_v0.1_20261109/resample_xy30_pilot.py",
+      "source": "sign-language-practice/02_파이프라인/video_pipeline_v0.1_20261109/resample_xy30_pilot.py",
+      "sha256": "5e7a1bfb86da2ec3912baed6d4593ee30603cef014cfaa867cbd781b3f560fc5",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_pipeline_v0.1_20261109/review_raw_hands.py",
+      "source": "sign-language-practice/02_파이프라인/video_pipeline_v0.1_20261109/review_raw_hands.py",
+      "sha256": "4ce791c5e1b551b5b8c3c1b649e257954ebd09e67865d175da424d5d772b16c2",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_pipeline_v0.1_20261109/run_video_pipeline.py",
+      "source": "sign-language-practice/02_파이프라인/video_pipeline_v0.1_20261109/run_video_pipeline.py",
+      "sha256": "168d5f947172a2f81c44418f0cce4bed6e6a6a3bceadd96cfe5643ba4afb4d04",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_pipeline_v0.1_20261109/track_hands_pilot.py",
+      "source": "sign-language-practice/02_파이프라인/video_pipeline_v0.1_20261109/track_hands_pilot.py",
+      "sha256": "dd7ff8a8750e972e860f104170ca51d262acf9cc58fffd2b4768cff6f27b5d8c",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_pipeline_v0.1_20261109/track_hands_v2_experiment.py",
+      "source": "sign-language-practice/02_파이프라인/video_pipeline_v0.1_20261109/track_hands_v2_experiment.py",
+      "sha256": "985dfd28f73a29de243bd9a4ae993c42520e27b7f9891f608c91364e219b06d6",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_pipeline_v0.1_20261109/train_aihub_knn.py",
+      "source": "sign-language-practice/02_파이프라인/video_pipeline_v0.1_20261109/train_aihub_knn.py",
+      "sha256": "4d3202ae04acbd5fa685f4c70fcc23e2403cdafdaf0b10aa0766bab94920acd3",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_pipeline_v0.1_20261109/video_feature_pipeline.py",
+      "source": "sign-language-practice/02_파이프라인/video_pipeline_v0.1_20261109/video_feature_pipeline.py",
+      "sha256": "6ae6b3f93b970832397d0eea00481b20b3f121e356d0484707b49e66080c9413",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_recovery_checks_v0.1_20261109/test_video_recovery.py",
+      "source": "sign-language-practice/02_파이프라인/video_recovery_checks_v0.1_20261109/test_video_recovery.py",
+      "sha256": "4b947be361018fd59e66c87bfc34cab168bcb653016aa44bde8a47680cd7b5cf",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_reference_checks_v0.1_20261109/check_video_case.py",
+      "source": "sign-language-practice/02_파이프라인/video_reference_checks_v0.1_20261109/check_video_case.py",
+      "sha256": "b0e0df40285c0f940628b4c23d177142b77b70315319773e6f4ff722528bf62b",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_spark_stats_v0.1_20261109/requirements.txt",
+      "source": "sign-language-practice/02_파이프라인/video_spark_stats_v0.1_20261109/requirements.txt",
+      "sha256": "040d4c58ea5d172f324876abd1be92caac9fd9fe3ee75875ed59e004088879eb",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_spark_stats_v0.1_20261109/spark_video_stats.py",
+      "source": "sign-language-practice/02_파이프라인/video_spark_stats_v0.1_20261109/spark_video_stats.py",
+      "sha256": "ab7f4b1097d0edef54c721daf1a5249fc08dbace212426896eceab11c5be7203",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_spark_stats_v0.1_20261109/test_video_spark_stats.py",
+      "source": "sign-language-practice/02_파이프라인/video_spark_stats_v0.1_20261109/test_video_spark_stats.py",
+      "sha256": "1db5733adab15650ad214377bb182b44a973719452243315fc705924e9eebb39",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_upload_v0.1_20261109/probe_uploaded_video.py",
+      "source": "sign-language-practice/02_파이프라인/video_upload_v0.1_20261109/probe_uploaded_video.py",
+      "sha256": "dca823b98ace06d71a7c5ce551e3420d96725268d4f24f80b9b4572cd6db9bc7",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_upload_v0.1_20261109/requirements.txt",
+      "source": "sign-language-practice/02_파이프라인/video_upload_v0.1_20261109/requirements.txt",
+      "sha256": "a38627a5271ede5987e9fe1aa76c288be1cd446cc32c3a71497932863ecb6d25",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_upload_v0.1_20261109/serve_video_upload.py",
+      "source": "sign-language-practice/02_파이프라인/video_upload_v0.1_20261109/serve_video_upload.py",
+      "sha256": "b59818518320e82ba2b0f090193fbd4de6b2ca5cf7d5c3f82474e45ca17f5a7c",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_upload_v0.1_20261109/test_video_upload.py",
+      "source": "sign-language-practice/02_파이프라인/video_upload_v0.1_20261109/test_video_upload.py",
+      "sha256": "d286991dc83949a1b18c972d188332cb182f6c655ff8c43bd238c6597a02161c",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/02_파이프라인/video_word_checks_v0.1_20261109/test_video_word_cases.py",
+      "source": "sign-language-practice/02_파이프라인/video_word_checks_v0.1_20261109/test_video_word_cases.py",
+      "sha256": "18b41fe9ab9c2de4961e8345c4dc9cbc64087e21806fbb870f980272593be6f0",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/assign_hands_experiment.py",
+      "source": "sign-language-practice/03_실습코드/assign_hands_experiment.py",
+      "sha256": "532132dcd82fa306289f32cd139d3bc8fce92d3047befe0d21e92024af8ba89c",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/batch_assignment_experiment.py",
+      "source": "sign-language-practice/03_실습코드/batch_assignment_experiment.py",
+      "sha256": "5de179e159af5f617f68d44e8f8a6f4e794f610c75231d9ea2e428aa88e10d01",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/build_aihub_word_segments.py",
+      "source": "sign-language-practice/03_실습코드/build_aihub_word_segments.py",
+      "sha256": "c6fcda76694dd55c04dfa08bd59d280a7a1f3a6b47f4a8e68e18613df7db9df8",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/build_mediapipe177_pilot.py",
+      "source": "sign-language-practice/03_실습코드/build_mediapipe177_pilot.py",
+      "sha256": "3cd126cdae2d6b5cf627468d4b8e98b9db284f4d83a9a4834ef855db5538307b",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/camera_test.py",
+      "source": "sign-language-practice/03_실습코드/camera_test.py",
+      "sha256": "a1cf925ff1bc62fd5760d9cc811b6f390e21503fa3a9a1c3652764241461c3de",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/check_aihub_training_inputs.py",
+      "source": "sign-language-practice/03_실습코드/check_aihub_training_inputs.py",
+      "sha256": "31cc5540033883a866a81532bb558df37480aaab1b3c4a6ea7ac06e0d068c28d",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/check_aws_mongodb.py",
+      "source": "sign-language-practice/03_실습코드/check_aws_mongodb.py",
+      "sha256": "baf7a37011a0f8f293a25b44cf201c9f8a155b6e59a89d901af7f038de34c53e",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/check_spark_environment.py",
+      "source": "sign-language-practice/03_실습코드/check_spark_environment.py",
+      "sha256": "1a7e1214024920338a6f7a5b40473f39dfcf1eb53e1f60258d427735528202bc",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/collect_sign_samples.py",
+      "source": "sign-language-practice/03_실습코드/collect_sign_samples.py",
+      "sha256": "c0190dc134b51651cccb0edf95f7f5b47679a37bb8bb897785e5e0b60b343ec5",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/compare_hand_local_features.py",
+      "source": "sign-language-practice/03_실습코드/compare_hand_local_features.py",
+      "sha256": "c4e2b2ea844b88b78293384bd7a4aa33dd0ff625d96f2f208660ec9bdd9e59d4",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/compare_new_video_models.py",
+      "source": "sign-language-practice/03_실습코드/compare_new_video_models.py",
+      "sha256": "7e91d3954dd5e182a8f125923e988c9d078a6e198cb36197a1b2acb52b6a9c7c",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/diagnose_hand_labels.py",
+      "source": "sign-language-practice/03_실습코드/diagnose_hand_labels.py",
+      "sha256": "72109f70445a5d1e9a53fcd2de0432305f722f282d6a40c67a146683e66cdd7b",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/export_prediction_bundle.py",
+      "source": "sign-language-practice/03_실습코드/export_prediction_bundle.py",
+      "sha256": "faff133d4b4d0a4e414f099d80eee4d25987d5a906187b9a64d696be696fa3da",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/extract_ksl_batch.py",
+      "source": "sign-language-practice/03_실습코드/extract_ksl_batch.py",
+      "sha256": "528f27c3c582b6cdbecaaaa33a93391188655a3b862e414d9fceb035c7a0bece",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/extract_one_video.py",
+      "source": "sign-language-practice/03_실습코드/extract_one_video.py",
+      "sha256": "9f8e2caec9768608a9766671b3c851978b9d33e7eaca1af0f544f990c062c2ef",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/hand_local_features.py",
+      "source": "sign-language-practice/03_실습코드/hand_local_features.py",
+      "sha256": "cbebe9fa1698cb92d4622233b0b323946cd82eef4d0cdfc651e612e4fb2d2444",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/hand_test.py",
+      "source": "sign-language-practice/03_실습코드/hand_test.py",
+      "sha256": "ea43cb34b1d2f40b54eb39d5ca087bb2d7b84702625d3fe39f26e4b1bcd8d4cd",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/normalize_mediapipe177_pilot.py",
+      "source": "sign-language-practice/03_실습코드/normalize_mediapipe177_pilot.py",
+      "sha256": "83d66fd82fc5446ffc83006e723b471de825b1209030fc83ab8691d4e5eac2f5",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/predict_feature_json.py",
+      "source": "sign-language-practice/03_실습코드/predict_feature_json.py",
+      "sha256": "431fe3432e821993f9807654c42f087e9a989d7fdbdb6c1e58da0942c7a1dade",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/predict_mediapipe_video.py",
+      "source": "sign-language-practice/03_실습코드/predict_mediapipe_video.py",
+      "sha256": "15f9050f4973733c53f80a902b361a540b0ae7b2eab02075cb167755780c11ac",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/prepare_aihub_baseline.py",
+      "source": "sign-language-practice/03_실습코드/prepare_aihub_baseline.py",
+      "sha256": "7f8e63984351eaeb9b2cd386b8585b89911a4e582761f208d03a55e80202f62c",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/prepare_aihub_word_clip.py",
+      "source": "sign-language-practice/03_실습코드/prepare_aihub_word_clip.py",
+      "sha256": "4b33be9f0a5e57e17b26dc2287a2edcea5e5a0d690d10cb2adc4af977ead5326",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/prepare_assignment_v2_baseline.py",
+      "source": "sign-language-practice/03_실습코드/prepare_assignment_v2_baseline.py",
+      "sha256": "dc4a7da1e46f8a7b30ecbeadcb39f2c4705b29f2c8609f8f6fd8fc26a27a6810",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/prepare_ksl_subset.py",
+      "source": "sign-language-practice/03_실습코드/prepare_ksl_subset.py",
+      "sha256": "5cd82e1c477f095c3239ac6a97a3ac7ae19a9e79920c4f25896c836e44761771",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/prepare_mediapipe_baseline.py",
+      "source": "sign-language-practice/03_실습코드/prepare_mediapipe_baseline.py",
+      "sha256": "018ba81e2292bf44aa206b32213fd81297f435ba325e86d5801687e52593b34b",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/project_paths.py",
+      "source": "sign-language-practice/03_실습코드/project_paths.py",
+      "sha256": "fe794a7338a78be206071937efb712fc011b5b1931a811889a002676043c59c7",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/record_hand_sequence.py",
+      "source": "sign-language-practice/03_실습코드/record_hand_sequence.py",
+      "sha256": "aa2c5c6f04b05c906edf1f413a879497fc21f2ff9147bbbdb2dbbca7341add58",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/record_webcam_clip.py",
+      "source": "sign-language-practice/03_실습코드/record_webcam_clip.py",
+      "sha256": "41914e0ce3610324ac6b4c6b45170d05cf8c9f915e7a772c758dd6bbc406cbf5",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/replay_hand_sequence.py",
+      "source": "sign-language-practice/03_실습코드/replay_hand_sequence.py",
+      "sha256": "b53709bd24e92ae756cdafa1314ebcb702e11dcdbe24053b8dd8afffa2af1630",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/resample_xy30_pilot.py",
+      "source": "sign-language-practice/03_실습코드/resample_xy30_pilot.py",
+      "sha256": "f426c260315546e98cc017a9b02d550c736a0fc67933011823a5da94374bceef",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/review_aihub_video.py",
+      "source": "sign-language-practice/03_실습코드/review_aihub_video.py",
+      "sha256": "9aabea2528cb781acf0471da8c1bd5f28a2d7513ae9b9082bc105a7b714398e2",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/review_mediapipe177.py",
+      "source": "sign-language-practice/03_실습코드/review_mediapipe177.py",
+      "sha256": "a69da9edf553199acedd035345562a59e98f0541da950c015b321cc7efff0289",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/review_model_input.py",
+      "source": "sign-language-practice/03_실습코드/review_model_input.py",
+      "sha256": "4ffc7b995b4063c65d8ab8d788451ec5c10aa695a22c8d3b662da3e795253c6b",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/review_new_prediction.py",
+      "source": "sign-language-practice/03_실습코드/review_new_prediction.py",
+      "sha256": "3e2887fe0f9bc1588313e0bc24a809f34fcdec338c257ac860ddaf9642b7a825",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/review_raw_hands.py",
+      "source": "sign-language-practice/03_실습코드/review_raw_hands.py",
+      "sha256": "8893333685eb1a8e0ffa75ca24d85fa82eb8c639afe31a98d57498e67748a61f",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/review_video_coordinates.py",
+      "source": "sign-language-practice/03_실습코드/review_video_coordinates.py",
+      "sha256": "c58ece7ddefb86c56d40e54d2d089b28612177dca002d1a784a146a6dd6846d2",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/run_aws_pipeline.py",
+      "source": "sign-language-practice/03_실습코드/run_aws_pipeline.py",
+      "sha256": "4a42ec9afff59d5dac49fc726e758f1eacc7f843066dba550e32a2c14eb64809",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/run_mediapipe_batch.py",
+      "source": "sign-language-practice/03_실습코드/run_mediapipe_batch.py",
+      "sha256": "11fc52effd06faebd641a41938c4785fcea21215ec167a1dd6efe49f31391b47",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/save_hand_sample.py",
+      "source": "sign-language-practice/03_실습코드/save_hand_sample.py",
+      "sha256": "b622c41bf9bf71e8b9426a622eb3ef03349ba74ebc8036cefdeed462f0fcee0f",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/select_gesture_interval.py",
+      "source": "sign-language-practice/03_실습코드/select_gesture_interval.py",
+      "sha256": "8c8d087ddd58f792c989ca05a5c74d846cdb14c95c22efef10c20bad9dba0670",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/serve_feature_api.py",
+      "source": "sign-language-practice/03_실습코드/serve_feature_api.py",
+      "sha256": "6598e077a4314ba6b00d0b084dd7c8b34aee0fde724ef5985834f8ccd2a99396",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/test_feature_api.py",
+      "source": "sign-language-practice/03_실습코드/test_feature_api.py",
+      "sha256": "c21bc776b3bf642d9beaea62f6b3b9580ffa295e7caa99cff2ba532600772241",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/track_hands_pilot.py",
+      "source": "sign-language-practice/03_실습코드/track_hands_pilot.py",
+      "sha256": "450856c128fa29c9fc1bb19dbcf3ed8cd3bdd138691c427720251936d2967926",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/track_hands_v2_experiment.py",
+      "source": "sign-language-practice/03_실습코드/track_hands_v2_experiment.py",
+      "sha256": "d7f76abea406975828e9ac50459f755ec650789787906aa644a407507f14e45a",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/03_실습코드/train_aihub_knn.py",
+      "source": "sign-language-practice/03_실습코드/train_aihub_knn.py",
+      "sha256": "d6c4f58e08ca810030aa4590d8fc2d65e9748db056df62524b4e2f2d2c038c7e",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "experiments/kafka_local_v0.1_20261106/compose.yaml",
+      "source": "sign-language-practice/kafka_local_v0.1_20261106/compose.yaml",
+      "sha256": "3edfc979f24dbe814f9f38396b3de21824a561941408fd134bd8eff380d0fd1a",
+      "review_copy": "identical where present"
+    },
+    {
+      "destination": "mobile/ios/ios-board/tools/sheet.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/tools/sheet.swift",
+      "sha256": "04b3f3306214519705cdf1b883bc8885d9bca0897c9d067b2aa6cc378e932493"
+    },
+    {
+      "destination": "mobile/ios/ios-board/tools/snapshots/main.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/tools/snapshots/main.swift",
+      "sha256": "df40322cfd330beed4ee3248d75e8554874cfd007294ae28bed9080cb943c346"
+    },
+    {
+      "destination": "mobile/ios/ios-board/tools/make_icon.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/tools/make_icon.swift",
+      "sha256": "0ff5be271eb1d1ecf8b104bcf38701e4f99f234e39ad7a45391c83cb9d2d809f"
+    },
+    {
+      "destination": "mobile/ios/ios-board/tools/synctest/main.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/tools/synctest/main.swift",
+      "sha256": "8a166f17abedaa8c0046c73dce2ab55d48e94f978f9be1f8e8515d4cf6951e12"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoardUITests/TourTests.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoardUITests/TourTests.swift",
+      "sha256": "ed4bce6fae23b716ff3585d9b45d8c1356ef09a6c4957fee8d581c8919bce29a"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoardUITests/SyncTests.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoardUITests/SyncTests.swift",
+      "sha256": "82f140e2d08922c9696514723ea3117f9940e9fe820a723cd20c58eeee743d64"
+    },
+    {
+      "destination": "mobile/ios/ios-board/project.yml",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/project.yml",
+      "sha256": "69e584eb7e8ce939e7db105dc2b516b8a9d2d6b16f36f69131ce229328fbc323"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/TranslateView.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/TranslateView.swift",
+      "sha256": "f971b31422f48bb655b5d4145dea53498a5b08370f751189020ccba965da35cb"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/LearnView.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/LearnView.swift",
+      "sha256": "4deb5b54cc3d24bfcfcb05b09d29b31065da46edf19ea06f662788d17462c3b1"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/PracticeView.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/PracticeView.swift",
+      "sha256": "cc31d62c5ff22c49c4e692f2d844cc416a3db7183f592fe4628745a31b7084ff"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/SyncViews.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/SyncViews.swift",
+      "sha256": "91870bdea3612dceb2e6e22f34f0f6e84451d6a5f778d66b7f90690b6ae80b36"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/TokenDetailView.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/TokenDetailView.swift",
+      "sha256": "37902c1d15760819ac56ffa5b0e60111282eb7b1f39738f7ec117b41e7fd6dae"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/Parts.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/Parts.swift",
+      "sha256": "ab2ef486f586dc9c56e71f59c6094864b05fc091cbef8e81ae172b4b477088b5"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/Gloss.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/Gloss.swift",
+      "sha256": "af87158e85e743bd84c491545437229b023c04758fe4ec58ec60a68e92a00057"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/LaneView.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/LaneView.swift",
+      "sha256": "4a3398ec8848a80892cd3c8e848f79a8a57e33f15e98ce790e4417e622f936bb"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/Avatar/AvatarScene.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/Avatar/AvatarScene.swift",
+      "sha256": "374649430df2733e8b21bb5940b352406ca20e32aad6276225d03d71a71f7a8d"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/Avatar/AvatarView.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/Avatar/AvatarView.swift",
+      "sha256": "8fddec51b99fbddfdb139dca6600a9cf5325d4815e97b7ed4ca4c4c88787110b"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/Avatar/AvatarMotion3D.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/Avatar/AvatarMotion3D.swift",
+      "sha256": "c1501d9a4a17dae831c503afea56fb9aca4716834cc3fd1c20346544e40fae7f"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/Avatar/AvatarMotion.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/Avatar/AvatarMotion.swift",
+      "sha256": "e97a10c876c618b59971fc87880ce155de225fd790c0a4fbba16fe1e30d3fd32"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/Theme.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/Theme.swift",
+      "sha256": "24364949a35acfcd87f66374a51d24eb5aab0809ee82d41188f6fe5e190fa4e1"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/FigureView.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/FigureView.swift",
+      "sha256": "8ba1b02035967dc6490543d299f6ed597358819c73807fd3e7e55492b3574226"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/UI/LessonView.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/UI/LessonView.swift",
+      "sha256": "70b134c5fe008932a0766c8acbe115c50f9fcb70bb9cd1bd25191d8c12b78a83"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/App/KSLBoardApp.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/App/KSLBoardApp.swift",
+      "sha256": "a387f5713d8ce8bac207d92e6ffe133c5761e96d3507e462715b6981a45a6f0f"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/Sync/SyncCenter.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/Sync/SyncCenter.swift",
+      "sha256": "031b15bb7076a8a2466aaf94b6e57ad4b5b2a272f46fe3c789100ba1d48ad708"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/Sync/Outbox.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/Sync/Outbox.swift",
+      "sha256": "81950a48729733ec906251e702305417ad0b5615e3037612e3b2862ed3b04b46"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/Sync/ServerConfig.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/Sync/ServerConfig.swift",
+      "sha256": "23ac95c43201ac55adf044e5b66705675312d992520f9ffada4a9be12abcc72a"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/Sync/SyncEvent.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/Sync/SyncEvent.swift",
+      "sha256": "be1b9ef3251e287c97d17d53e7925d2ae0f850bdae3c294c98ff8d8afe10ecda"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/Engine/Reading.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/Engine/Reading.swift",
+      "sha256": "e74e5b392993e201e4efe806a551954f6c84ce0642366840382eb717adb6344a"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/Engine/CameraSource.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/Engine/CameraSource.swift",
+      "sha256": "377a65e3317b3127aaf9d925984afdcf29e3645e66b130a9d4379382a8f04ae2"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/Engine/HandMirror.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/Engine/HandMirror.swift",
+      "sha256": "91cd86b0310781963d68e492311f4195b885ba63c3de3f6b809989703f010ff9"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/Engine/FrameSource.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/Engine/FrameSource.swift",
+      "sha256": "97b54db5ee0bb1f43d62258a64655842b3051fd96d97aaf84aac8f448e79504a"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/Engine/BoardModel.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/Engine/BoardModel.swift",
+      "sha256": "7d1d8d04f599713e332fb4fd55bb6ee40668c01aee00de1f09f7031bf403de7f"
+    },
+    {
+      "destination": "mobile/ios/ios-board/KSLBoard/Engine/Learning.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/KSLBoard/Engine/Learning.swift",
+      "sha256": "e85de0f83b0fb1873e633c41baa078786b26505308663521ce8cc2db2f99edfb"
+    },
+    {
+      "destination": "mobile/ios/ios-board/Support/Info.plist",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/Support/Info.plist",
+      "sha256": "75928640584da1e043374da695f7edc56d675430f4fe01b541894bbb6ea7591b"
+    },
+    {
+      "destination": "mobile/ios/ios-board/Podfile",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios-board/Podfile",
+      "sha256": "6052c0e96b3030c1d932f09062128a6df9f5b0eaf7b09186f78cf334f31baafb"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/KSLSignApp.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/KSLSignApp.swift",
+      "sha256": "82a8f41d7c94189baf1ad5adee2e1cf534edcd41f84fda4cc4f23aa2633369d1"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/UI/SettingsView.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/UI/SettingsView.swift",
+      "sha256": "511553c81aa83b3bc10928c36d7bb3dbc77aeb5040bcbb60593a0c46da0e3652"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/UI/OverlayView.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/UI/OverlayView.swift",
+      "sha256": "5ab378ea3ba7ff7e378268b87a93819afc38b339db46f0c82c60c4b8c0a37d6c"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/UI/TranslatorModel.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/UI/TranslatorModel.swift",
+      "sha256": "a333cfbe5cf7c5963864ad9437c036b47d292ce7e7fda3a54f7b9e1c3bb11d6d"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/UI/TranslationViews.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/UI/TranslationViews.swift",
+      "sha256": "da0a295fee9da9b2bb6be9fcb3ce0b033bc785cefcc104f8d77bc2a09ed80ee0"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/UI/SelfCheckView.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/UI/SelfCheckView.swift",
+      "sha256": "b915a13616b34c9d6ab9b35270441d72d623cf63a40c5c282885dfac64e4b1f8"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/UI/ContentView.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/UI/ContentView.swift",
+      "sha256": "b51f6ac5f6b9bea1962aa34470f92353a78a988a755435cddd62602d689f8d47"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/Capture/CameraController.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/Capture/CameraController.swift",
+      "sha256": "5a9509d7b79510c2b1812fa3a91c883d27e9ab950ec508d6a2cdaf17888e817c"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/Capture/FrameOrienter.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/Capture/FrameOrienter.swift",
+      "sha256": "86a51a3e3d01148925b99daf596b14ff8e4b830d68529f07f61a8f8abda9aeef"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/Capture/LandmarkDetector.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/Capture/LandmarkDetector.swift",
+      "sha256": "ab757f3e80faee1cb367c8bd2e773525b2b22d38b33b7149a942b09cbe18dd70"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/Core/PositionGuide.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/Core/PositionGuide.swift",
+      "sha256": "fd0e483fa0ce732f411ac14f316cca4b0a711fb24816693c195f52f7c9a5b357"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/Core/SignSpec.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/Core/SignSpec.swift",
+      "sha256": "b3956ce5c312d187c4821059369c32a13d344e9e938b913eb15a2ddd76223fdf"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/Core/SignClassifier.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/Core/SignClassifier.swift",
+      "sha256": "e4e5779fa8a8a236bc9a19d8c9fccf6257bc433c2ddb4db6b63a3e2d3f5a8fd6"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/Core/SampleStore.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/Core/SampleStore.swift",
+      "sha256": "e26cf64a0616b3c8b3fb51d12d48cca0f1cacdce3a4c7caa0a7366940287c86d"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/Core/Preprocess.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/Core/Preprocess.swift",
+      "sha256": "0923429a6adabcf5f4a1121195da1506ec8039baff4fd9f95ff952b82e850148"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/Core/ExampleSample.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/Core/ExampleSample.swift",
+      "sha256": "31ec360bcc5c4d352981f5ccc483c3887d859f59ff8e1474e94da8ec0ae302a7"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/Core/Segmenter.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/Core/Segmenter.swift",
+      "sha256": "543f0d35b06de995be679db09d5f55399f00188827b50610a6b49edafb3b783c"
+    },
+    {
+      "destination": "mobile/ios/ios/KSLSign/Core/FrameBuilder.swift",
+      "source": "수어칠판_아이폰앱.zip!/수어칠판_아이폰앱/ios/KSLSign/Core/FrameBuilder.swift",
+      "sha256": "6001eedff3b47740ddc09a03d5c2e36733d9be5d70f3df7b8508bf2eb74b499f"
+    },
+    {
+      "destination": "mobile/android/expo-board/tools/test_pose_hold.mjs",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/tools/test_pose_hold.mjs",
+      "sha256": "9f11e49d9c1cefece608c0e06953cbf12bf34faac681f56100f1caebdf956a4b"
+    },
+    {
+      "destination": "mobile/android/expo-board/tools/build_engine.mjs",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/tools/build_engine.mjs",
+      "sha256": "1ab11a7fab6a240b5162e537e7a5285d01a98e563bed1d9110e9bc4ca68ecc51"
+    },
+    {
+      "destination": "mobile/android/expo-board/tools/test_slow_frames.mjs",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/tools/test_slow_frames.mjs",
+      "sha256": "1a058f9ca983a5be35d5ddf1573ee10ba8ce7cfee17bacc49fcb95e66b1a8275"
+    },
+    {
+      "destination": "mobile/android/expo-board/tools/test_core.mjs",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/tools/test_core.mjs",
+      "sha256": "d162e62059175c2c1428f0ff6f78a99a90b8e1835be877bbb732c900d228bb28"
+    },
+    {
+      "destination": "mobile/android/expo-board/LICENSE",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/LICENSE",
+      "sha256": "fb3ca4a837f5779e83cef89b78253a8949cfb9429c340309f62d0465ec6610b4"
+    },
+    {
+      "destination": "mobile/android/expo-board/app.json",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/app.json",
+      "sha256": "27ec06892ecc2b0345c6c92502be849306de43db025b0fe5f202b7271eebe494"
+    },
+    {
+      "destination": "mobile/android/expo-board/web/ui.js",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/web/ui.js",
+      "sha256": "895466a19eb56eb1a5cd787699c78130bc00ca63296a2118cfda18ce0a57e424"
+    },
+    {
+      "destination": "mobile/android/expo-board/web/ui.css",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/web/ui.css",
+      "sha256": "8c5e80059ce087d0a3318fa929bd34ec04ee8f217145211fd2c98a3a9baf9937"
+    },
+    {
+      "destination": "mobile/android/expo-board/index.js",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/index.js",
+      "sha256": "5c157f4d44972d9c84415e1e4bda595b3abcd8cf733f8a9cd20935bec3eccc42"
+    },
+    {
+      "destination": "mobile/android/expo-board/server.config.example.json",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/server.config.example.json",
+      "sha256": "a5e465feaa5d8ddd56b1f0ef797a3c882e4dc6f33a2a0a59ddd885bcce29c84d"
+    },
+    {
+      "destination": "mobile/android/expo-board/.gitignore",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/.gitignore",
+      "sha256": "51c9101e1d040688a330be5fa8e2550c7942661d86156142bedbb02c5df55587"
+    },
+    {
+      "destination": "mobile/android/expo-board/package-lock.json",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/package-lock.json",
+      "sha256": "aea5e5a9baf4ad31e46293542e5bb991122d79946c410a2e3d743607e2d3bfd1"
+    },
+    {
+      "destination": "mobile/android/expo-board/package.json",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/package.json",
+      "sha256": "91a145e3ccfa193663e7a6917558e366543a4aecf1dbdf8ca2509c8af81a430c"
+    },
+    {
+      "destination": "mobile/android/expo-board/engine/page.html",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/engine/page.html",
+      "sha256": "ad5bdd8dd269d32381fc9c616761ae89f98371dbc46d2813cfdd93a869446394"
+    },
+    {
+      "destination": "mobile/android/expo-board/engine/core.js",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/engine/core.js",
+      "sha256": "9915568253d79c87cf7804689b065159c715d5e6231fe69850a72e0f1402704b"
+    },
+    {
+      "destination": "mobile/android/expo-board/App.js",
+      "source": "수어칠판_안드로이드앱.zip!/수어칠판_안드로이드앱/expo-board/App.js",
+      "sha256": "d06a174dec4fd95bf7af303ce0288f7f33c3ec3ccfc77ce6235fb12911475232"
+    },
+    {
+      "destination": "experiments/team-event-validation/learning_attempt_contract.py",
+      "source": "team integration workspace/learning_attempt_contract.py",
+      "sha256": "495462c3af7b35ec8f4872f5a5aef59fa543553e4751f110600d4045a4fd41aa"
+    },
+    {
+      "destination": "experiments/team-event-validation/learning_attempt_test_api.py",
+      "source": "team integration workspace/learning_attempt_test_api.py",
+      "sha256": "f5daa11a0ff233d5baca9d8bb181f5c417d61ef0c46b5575dfb7c6f57a05f8fa"
+    },
+    {
+      "destination": "experiments/team-event-validation/test_learning_attempt_stream.py",
+      "source": "team integration workspace/test_learning_attempt_stream.py",
+      "sha256": "dc00bb00f2d595cf73bcbd39a869df6e148394aae711a82fc7917bd3c8b42ffa"
+    },
+    {
+      "destination": "experiments/team-event-validation/test_learning_attempt_mongodb.py",
+      "source": "team integration workspace/test_learning_attempt_mongodb.py",
+      "sha256": "04b4a74b15230f471234c825f96529b27b8c1a798c25be776456dfa97044209b"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+platform :ios, '17.0'
+
+target 'KSLBoard' do
+  use_frameworks!
+  # MediaPipe Tasks for iOS (HandLandmarker, PoseLandmarker). KSLSign과 같은 버전을 쓴다 (Podfile.lock)
+  pod 'MediaPipeTasksVision'
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '17.0'
+    end
+  end
+end

@@ -1,45 +1,34 @@
-# 게시 패키지와 자료 근거
+# 통합 패키지와 출처 관리
 
-이 패키지는 팀이 구현·수행한 프로젝트의 기술 설명과 측정 근거를 정리한 GitHub 게시용 문서입니다. 앱 원본 ZIP·모델·본보기 자산·인증정보·사용자 이벤트 원문은 재배포 묶음에서 제외했습니다.
+2026-11-26 통합본은 최신 GitHub main 563dea74와 팀원이 병합한 PR #1·#2를 기준으로 작성했습니다. 문서와 코드·저장된 실행 결과를 서로 연결했습니다.
 
-## 패키지 구성
+## 포함 범위
 
-| 위치 | 내용 |
-|---|---|
-| README.md | 프로젝트 소개·수행 내용·아키텍처·ERD·결과 |
-| docs/instructor-requirements.md | 강사 과제와 연결되는 실제 팀 수행 내용 |
-| docs/streaming-semantics.md | Kafka 수집·키·Spark 소비·집계·재처리 |
-| docs/architecture.md | 앱·서버·DB·AWS 네트워크 |
-| docs/app-engine.md | 좌표 전처리·GRU 계산·기준 데이터 재검증 |
-| docs/data-contract.md | 이벤트·식별자·시각·원장 구조 |
-| docs/data-model.md | 실제 원장 ERD·이벤트 논리 관계 |
-| docs/data-flow.md | 사용자 행동부터 적재·오류 조사까지 시각화 |
-| docs/reliability-and-optimization.md | 예외 처리·재전송·재처리·조회 인덱스 |
-| docs/design-decisions.md | 적용한 구성의 이유와 기술적 특성 |
-| docs/operations.md | 단건 조회·응답별 조사·운영 수행 기록 |
-| docs/verification.md | 직접 수행한 결과와 서버 보고 |
-| docs/app-status.md | 앱 담당자 확인 결과·앱 묶음 정리·동의 범위·보안 점검 |
-| docs/presentation.md | 수행 내용 중심 발표 흐름·질문 답변 |
-| evidence/ | DB·엔진 결과 JSON과 원본 자료 해시 |
-
-## 작성 근거
-
-| 자료 | 반영한 내용 | 근거 유형 |
+| 영역 | 포함한 것 | 근거 |
 |---|---|---|
-| aws-deployment-and-data-pipeline.md | EC2·HTTPS·API·Kafka·Spark·집계·재처리 | 서버 담당자 제공 보고 |
-| 수어칠판_아이폰앱.zip | Swift 화면·엔진·Sync·이벤트 규격 | 압축 내부 코드·문서 검토 |
-| 수어칠판_안드로이드앱.zip | Expo·WebView·GRU·이벤트 전송 | 압축 내부 코드·문서 검토 |
-| 기존 팀 handoff 문서 | PrivateLink·TLS·인증·운영 점검 | 팀 운영 자료 |
-| 11월 23일 DB 진단·인덱스 결과 | 문서 검사 73→10·원문 비교·임시 예외 시험 | 실제 AWS 실행 |
-| 11월 23~25일 MongoDB 조회 | 이벤트 ID·오프셋·시각·device 대조 | 실제 AWS 조회 |
-| 앱 담당자 전송 목록 | 단말 이벤트와 원장 연결 | 제공 목록·DB 대조 |
-| Android 단일 기준 데이터 | 전처리·확률·감사 판정 | 11월 25일 Node.js 직접 계산 |
-| 11월 25일 강사 지침 | 주제와 팀이 진행한 과제 영역 연결 | 사용자 전달 요구사항 |
+| 기존 팀 문서 | README·ERD·아키텍처·이벤트 계약·운영·실기기 결과 | GitHub main 스냅샷 |
+| 팀원 수정 | 최신 폰 전송 확인·앱 묶음 정리·보안 조치 보고, README 정리 | PR #1·#2 |
+| MediaPipe·학습 | 녹화·추출·손 배정·정규화·재표본화·kNN·특징 비교 코드 | practice·review 로컬 대조 |
+| 파이프라인 실습 | 작업 API·MongoDB Outbox·Kafka·Spark·복구·회귀 검사 코드 | 원본 실습 패키지 |
+| 모바일 | Swift·Expo·WebView·GRU 소스·빌드 설정·의존성 명세 | 제공 iOS·Android ZIP |
+| 메인 서버 | 배포 구성·실제 적재·재처리 보고 | 제공 서버 MD의 구현·검증 부분 |
+| 측정 근거 | 원본 결과 파일의 해시·조건·집계 결과 | 기존 evidence와 추가 실험 보고 |
+| 통합본 검사 | 합성 함수 검사·구문·JSON·링크·출처 해시 검사 | tests·tools·검사 결과 JSON |
 
-원본 자료의 SHA-256은 [source-materials.json](../evidence/source-materials.json)에 보존했습니다. 원본 앱·서버 자료의 식별값과 현재 실행 환경의 관측 결과를 각각의 근거로 기록합니다.
+## 코드와 최신 확인 보고의 시점
 
-## 공개 파일 처리
+첨부된 앱 ZIP은 원래 제공된 코드 스냅샷입니다. 11월 25일 팀원 PR은 이후 실기기·앱 정리·보안 조치를 보고합니다. 두 자료를 하나의 코드 버전이라고 합치지 않고, 원본 ZIP·정리 후 ZIP의 해시와 보고 시점을 각각 보존했습니다.
 
-패키지는 설명 문서와 비밀값·사용자 원문이 없는 결과 파일로 구성했습니다. 실사용 API 키·DB 비밀번호·SSH 키·인증서 개인키·전체 DB 접속 문자열은 포함하지 않았습니다. 원본 앱의 모델·AIHub 본보기·기타 자산에 포함된 이용 조건은 원본 자료의 조건을 따릅니다.
+원본별 파일의 출처·해시는 [source-inventory.json](../evidence/source-inventory.json)에, GitHub 기준 커밋과 PR 정보는 [integration-baseline.json](../evidence/integration-baseline.json)에 있습니다. 원래 자료의 [source-materials.json](../evidence/source-materials.json)도 팀원 수정 상태로 유지했습니다.
 
-원본 안드로이드 앱 묶음에는 로컬 시험용 자체 서명 인증서와 개인키가 들어 있었습니다. 앱 담당자가 11월 25일에 묶음에서 제거했고, 내용은 [앱 담당자 확인 결과](app-status.md)에 적었습니다.
+## 파일 구성 원칙
+
+원시 영상·좌표·학습 NPZ·모델 가중치·MediaPipe 모델 파일·설치 파일·생성 번들·가상환경·체크포인트·DB 런타임·인증정보를 묶지 않았습니다. 코드와 실험 결과를 원본 자원에 연결하는 해시·계약·설명만 제공합니다.
+
+동일한 두 로컬 폴더를 그대로 중복 수록하지 않고, 실제 대조 결과를 기록한 뒤 소스 한 벌을 사용했습니다. 독립 실행 단위 안의 공통 모듈은 해당 패키지의 구조를 보존합니다. 개인 확장 포트폴리오 경로의 코드는 포함하지 않았습니다.
+
+모델·AIHub 본보기·제3자 자산의 이용 조건은 원본 자료의 조건을 따릅니다. Android 제공 LICENSE는 mobile/android/expo-board에 보존했습니다. 이 파일을 별도 모델·데이터 전체의 이용 허락으로 해석하지 않습니다.
+
+## 코드 탐색과 검증
+
+[소스·실행 안내](source-map.md)에서 실행 단위와 경로를 확인할 수 있습니다. 기존 GitHub를 갱신하는 절차는 [업로드 안내](publishing.md)에 있습니다.

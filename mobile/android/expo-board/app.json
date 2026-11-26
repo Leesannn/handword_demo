@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "수어 칠판",
+    "slug": "ksl-board",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.seeolgani.kslboard.expo",
+      "infoPlist": {
+        "NSCameraUsageDescription": "손과 몸의 위치를 읽어 수어를 알아봅니다. 영상은 저장하거나 전송하지 않습니다."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "package": "com.seeolgani.kslboard",
+      "permissions": [
+        "CAMERA"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "손과 몸의 위치를 읽어 수어를 알아봅니다. 영상은 저장하거나 전송하지 않습니다.",
+          "recordAudioAndroid": false
+        }
+      ],
+      "expo-video"
+    ]
+  }
+}

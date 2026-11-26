@@ -1,0 +1,23 @@
+{
+  "review_date": "2026-11-26",
+  "repository": "https://github.com/Shinkyeongho/handword_demo",
+  "baseline_commit": "563dea74fdc3cfd60244da472bdeae4a5f6b58fa",
+  "preserved_pull_requests": [
+    {
+      "number": 1,
+      "merge": "dd6f9e4f1aa7af9ce3a4d3cfe7dc9d8c51dd946a",
+      "scope": "app status, package revision hashes and README links"
+    },
+    {
+      "number": 2,
+      "merge": "563dea74fdc3cfd60244da472bdeae4a5f6b58fa",
+      "scope": "README wording cleanup and 57-event evidence"
+    }
+  ],
+  "server_report": {
+    "source": "aws-deployment-and-data-pipeline.md",
+    "sha256": "c4c77a0f4852ed87eff08d3f8a9ad49cbe2c7961df3d4e629e34204a3e118129",
+    "included": "completed implementation and validation sections"
+  },
+  "source_policy": "source snapshots and aggregate evidence; raw coordinates, videos, model weights, credentials and runtime state are excluded"
+}

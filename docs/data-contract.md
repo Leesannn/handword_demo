@@ -118,3 +118,4 @@
 ## 기기 구분
 
 직접 조회에서는 아이폰 `device=iPhone19,7`, `app_version=1.0`과 Android `device=android-16`, `app_version=1.0-expo`를 확인했습니다. Android 값만으로 제조사·갤럭시 모델까지 확정할 수 없습니다. 사용자 ID는 앱 인스턴스를 구분하는 식별자로 사용했습니다.
+

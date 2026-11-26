@@ -75,3 +75,8 @@ wrong_word는 목표와 다른 단어로 판정한 결과로, 앱 규격의 미�
 앱은 재전송에서 event_id를 유지하고 MongoDB 원장은 그 값을 _id로 사용합니다. 별도 임시 컬렉션 시험에서는 upsert와 $setOnInsert 조합으로 같은 이벤트를 반복 입력해도 한 건을 유지하고 최초 내용을 보존하는 동작을 확인했습니다.
 
 [예외 처리·최적화](reliability-and-optimization.md) · [실제 검증](verification.md)
+
+
+## 실행 소스로 확인한 실습의 처리 의미
+
+추가한 영상·특징 실습에서는 Kafka 입력 검증, 명시 스키마의 원장 DataFrame, F.window의 1분 Tumbling 집계, 고유 키·fingerprint·절대값 출력과 checkpoint 설정을 코드로 확인할 수 있습니다. 이벤트 시간은 Kafka 발행 시각입니다. 모바일의 학습 로그 계약과는 분리해 [구현·복구 문서](prototype-pipeline.md)에 연결했습니다.

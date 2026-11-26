@@ -1,0 +1,124 @@
+{
+  "review_date": "2026-11-26",
+  "execution_period": "2026-11-09",
+  "kind": "historical result files, not a rerun of live services",
+  "reports": [
+    {
+      "source": "02_파이프라인/video_jobs_v0.1_20261109/results/20261109T075802350400Z/video_job_check.json",
+      "source_sha256": "bd451b0290cd394120cda47e7068a17587a3513ff6fc711ec71b29dd1ecac87d",
+      "status": "passed",
+      "passed": 12,
+      "checks": [
+        "영상 작업 API·MongoDB 준비",
+        "영상 업로드 HTTP 201·원본 해시 일치",
+        "영상 인식 작업 접수 HTTP 202·작업 ID",
+        "같은 요청 재전송 시 같은 작업 ID HTTP 200",
+        "같은 요청 키·다른 구간 거부 HTTP 409",
+        "잘못된 프레임 구간 거부 HTTP 422",
+        "없는 영상 파일 ID 거부 HTTP 404",
+        "없는 작업 조회 HTTP 404",
+        "워커 영상 처리·커피 후보·구간·특징 크기 확인",
+        "Kafka 요청 소비 위치·MongoDB 결과 일치",
+        "요청·완료 Outbox 발행 확인",
+        "실제 Kafka 완료 이벤트·API 결과 일치"
+      ],
+      "scope": "로컬 단일 워커의 커피 회귀 검사. 모바일·Spark 통계·새 정확도 평가는 아님."
+    },
+    {
+      "source": "02_파이프라인/video_spark_stats_v0.1_20261109/results/20261109T080717960166Z/video_spark_check.json",
+      "source_sha256": "18ea26a5a19a4fce3f3ed368f50f68ecd4c98e8244e2be07c3a4761f5d087178",
+      "status": "passed",
+      "passed": 4,
+      "checks": [
+        "새 커피 영상 업로드·워커 처리 완료",
+        "영상 완료 이벤트의 Spark 원장 반영",
+        "단어별 누적·1분·완료 건수와 고유 원장 일치",
+        "동일 완료 이벤트 3회 재전달 후 건수·원장 시각 유지"
+      ],
+      "duplicate_events_sent": 3,
+      "stats_before": {
+        "coffee_total": 3,
+        "coffee_window": 1,
+        "completed_total": 6
+      },
+      "stats_after": {
+        "coffee_total": 3,
+        "coffee_window": 1,
+        "completed_total": 6
+      },
+      "scope": "기존 커피 영상 재사용의 통계 경로·중복 방지 검사. 새로운 정확도·지연 목표 평가는 아님."
+    },
+    {
+      "source": "02_파이프라인/video_word_checks_v0.1_20261109/results/20261109T080126809547Z/summary.json",
+      "source_sha256": "031601a4143ac20a6b2bffd8c2ceebeffef8e509a2e21cbdf99bb77c7acc738c",
+      "status": "passed",
+      "passed": 18,
+      "cases": {
+        "milk": {
+          "status": "passed",
+          "checks": [
+            "기준 영상 업로드·해시 일치",
+            "고정 구간 작업 접수 HTTP 202",
+            "워커 후보·처리 구간·30프레임 특징 확인",
+            "Kafka 완료 이벤트의 Spark 원장·API 결과 일치",
+            "단어별 누적·1분·완료 통계와 고유 원장 일치",
+            "완료 이벤트 3회 재전달 후 건수·원장 시각 유지"
+          ]
+        },
+        "thanks": {
+          "status": "passed",
+          "checks": [
+            "기준 영상 업로드·해시 일치",
+            "고정 구간 작업 접수 HTTP 202",
+            "워커 후보·처리 구간·30프레임 특징 확인",
+            "Kafka 완료 이벤트의 Spark 원장·API 결과 일치",
+            "단어별 누적·1분·완료 통계와 고유 원장 일치",
+            "완료 이벤트 3회 재전달 후 건수·원장 시각 유지"
+          ]
+        },
+        "cold": {
+          "status": "passed",
+          "checks": [
+            "기준 영상 업로드·해시 일치",
+            "고정 구간 작업 접수 HTTP 202",
+            "워커 후보·처리 구간·30프레임 특징 확인",
+            "Kafka 완료 이벤트의 Spark 원장·API 결과 일치",
+            "단어별 누적·1분·완료 통계와 고유 원장 일치",
+            "완료 이벤트 3회 재전달 후 건수·원장 시각 유지"
+          ]
+        }
+      },
+      "scope": "기존 고정 영상·수어 구간을 재사용한 회귀 검사. 새 독립 정확도·모바일 호환성 평가가 아님."
+    },
+    {
+      "source": "02_파이프라인/video_recovery_checks_v0.1_20261109/results/20261109T030707437864Z_finish-spark.json",
+      "source_sha256": "db0133bc1e46a414f4af5dc98546704ec57b12d5edb453838decb59b190bb885",
+      "status": "passed",
+      "checks": {
+        "queue-worker": [
+          "영상 업로드·복구 검사 작업 접수 HTTP 202",
+          "요청 Outbox의 Kafka 발행 확인",
+          "워커 중단 중 5초간 queued·추론 0회 유지"
+        ],
+        "finish-worker": [
+          "워커 재실행 후 같은 작업 ID로 커피 처리 완료",
+          "복구 결과의 Kafka 완료 발행·Spark 통계 반영",
+          "동일 요청 재전송 후 작업 ID·결과·추론 1회 유지"
+        ],
+        "queue-spark": [
+          "기존 원장·통계·영상용 체크포인트 기준 저장",
+          "Spark 중단 중에도 API·영상 워커·Kafka 완료 처리 성공",
+          "Spark 중단 중 5초간 기존 통계 유지·새 결과 미집계 확인"
+        ],
+        "finish-spark": [
+          "Spark 재시작 후 기존 고유 원장·시각 유지",
+          "중단 중 쌓인 작업 1건만 누적·1분·완료 통계에 반영",
+          "같은 체크포인트 진행·중복 3회 재전달 후 통계 유지"
+        ]
+      },
+      "duplicate_events_sent": 3,
+      "queued_observation_seconds": 5.0159877999685705,
+      "scope": "대기 작업 복구·Spark 재시작 검사. 처리 도중 강제 종료·운영 고가용성 검증은 아님."
+    }
+  ]
+}
