@@ -39,10 +39,10 @@
 <path d="M792 453 V504 H487 V453" fill="none" stroke="#7a8da2" stroke-width="2.4" stroke-dasharray="7 6" marker-end="url(#arrow)"/>
 <text x="640" y="534" font-size="18" fill="#245fba" font-weight="400" text-anchor="middle">Kafka 발행 확인 후 HTTP 202 응답</text>
 <rect x="48" y="582" width="1184" height="174" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
-<text x="72" y="621" font-size="23" fill="#142c45" font-weight="700" text-anchor="start">관측한 시간을 해석하는 기준</text>
-<text x="72" y="659" font-size="20" fill="#536b80" font-weight="400" text-anchor="start">event_time → received_at : 폰의 대기·재전송 시간이 함께 포함됩니다.</text>
-<text x="72" y="695" font-size="19" fill="#536b80" font-weight="400" text-anchor="start">적재 확인 : 동일 이벤트 ID · HTTP 응답 · Kafka 위치 · DB 원문을 대조했습니다.</text>
-<text x="72" y="729" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">이어진 학습 기록 8건도 HTTP 202 응답과 원장 587~594로 연결했습니다.</text>
+<text x="72" y="621" font-size="23" fill="#142c45" font-weight="700" text-anchor="start">관측 시간 해석 기준</text>
+<text x="72" y="659" font-size="20" fill="#536b80" font-weight="400" text-anchor="start">event_time → received_at : 폰 대기·재전송 시간 포함</text>
+<text x="72" y="695" font-size="19" fill="#536b80" font-weight="400" text-anchor="start">적재 확인 : 이벤트 ID · HTTP 응답 · Kafka 위치 · DB 원문 대조</text>
+<text x="72" y="729" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">후속 학습 8건 : HTTP 202 · 원장 오프셋 587~594 연결</text>
 <text x="48" y="840" font-size="16" fill="#536b80" font-weight="400" text-anchor="start">표시 시각: 한국 시간  ·  발생→수신 간격을 Spark 처리 시간이나 DB 쓰기 시간으로 환산하지 않음</text>
 </g>
 </svg>
