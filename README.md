@@ -101,17 +101,9 @@ iOS는 SceneKit 3D 본보기를 회전해 볼 수 있습니다. Android는 해�
 <tr><td>5개 목표 낱말</td><td>동작 순서·느린 재생</td><td>3·2·1 준비 후 동작</td><td>결과 확인·반복 연습</td></tr>
 </table>
 
-```mermaid
-flowchart LR
-    A[본보기 · 따라 하기] -->|lesson_started| B[준비 · 시도 시작]
-    B -->|practice_attempt| C[동작 인식]
-    C -->|recognition_result| D{판정 결과}
-    D -->|실패 후 다시 시작| E[retry + practice_attempt]
-    E --> C
-    D -->|세 번째 성공| F[lesson_completed]
-    D -->|한 번 더| B
-    F -->|닫기 · 마치기| G[lesson_ended]
-```
+[![학습 화면 조작과 이벤트 발생 흐름](assets/diagrams/app-learning-events.png)](assets/diagrams/app-learning-events.svg)
+
+*이미지를 클릭하면 확대 가능한 SVG 원본 표시.*
 
 *도식은 이벤트 발생 순서의 요약. 상세 화면·예외 분기는 [앱 화면과 이벤트 예시](docs/app-demo.md) 참고.*
 

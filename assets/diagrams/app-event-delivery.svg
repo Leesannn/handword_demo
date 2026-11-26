@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1060" viewBox="0 0 1280 1060" role="img" aria-labelledby="title desc">
+<title id="title">단말 판정과 서버 접수의 경계</title><desc id="desc">HTTP 202 접수와 MongoDB 저장 완료를 구분한 비동기 파이프라인</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7a8da2"/></marker></defs>
+<rect width="1280" height="100%" fill="#f4f7fb"/>
+<g font-family="Malgun Gothic, Noto Sans KR, Arial, sans-serif">
+<text x="48" y="37" font-size="15" fill="#245fba" font-weight="700" text-anchor="start" letter-spacing="2">APP TELEMETRY · ASYNCHRONOUS DELIVERY</text>
+<text x="48" y="85" font-size="33" fill="#142c45" font-weight="700" text-anchor="start">단말 판정과 서버 접수의 경계</text>
+<text x="48" y="118" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">HTTP 202 접수와 MongoDB 저장 완료를 구분한 비동기 파이프라인</text>
+<rect x="40" y="154" width="1200" height="245" rx="18" fill="#eaf7f3" stroke="#eaf7f3" stroke-width="1.5"/>
+<text x="62" y="191" font-size="21" fill="#087f72" font-weight="700" text-anchor="start">01  ON DEVICE  ·  영상 처리와 판정</text>
+<rect x="62" y="220" width="338" height="145" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="62" y="240" width="5" height="105" rx="2" fill="#087f72"/>
+<text x="84" y="255" font-size="22" fill="#087f72" font-weight="700" text-anchor="start">카메라 · MediaPipe</text>
+<text x="84" y="289" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">59점 × XYZ 좌표</text>
+<text x="84" y="316" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">영상은 단말 내부 처리</text>
+<rect x="471" y="220" width="338" height="145" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="471" y="240" width="5" height="105" rx="2" fill="#087f72"/>
+<text x="493" y="255" font-size="22" fill="#087f72" font-weight="700" text-anchor="start">구간 선택 · 전처리</text>
+<text x="493" y="289" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">동작 0.5~3초</text>
+<text x="493" y="316" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">모델 입력 30 × 177</text>
+<rect x="880" y="220" width="338" height="145" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="880" y="240" width="5" height="105" rx="2" fill="#087f72"/>
+<text x="902" y="255" font-size="22" fill="#087f72" font-weight="700" text-anchor="start">r0006 GRU · 결과 UI</text>
+<text x="902" y="289" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">Core ML / JavaScript</text>
+<text x="902" y="316" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">판정 후 이벤트 생성</text>
+<path d="M410 292 L459 292" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<path d="M819 292 L868 292" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<rect x="40" y="438" width="1200" height="245" rx="18" fill="#edf3fc" stroke="#edf3fc" stroke-width="1.5"/>
+<text x="62" y="475" font-size="21" fill="#245fba" font-weight="700" text-anchor="start">02  ACCEPTANCE  ·  이벤트 보관과 서버 접수</text>
+<rect x="62" y="504" width="338" height="145" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="62" y="524" width="5" height="105" rx="2" fill="#245fba"/>
+<text x="84" y="539" font-size="22" fill="#245fba" font-weight="700" text-anchor="start">SyncCenter · Outbox</text>
+<text x="84" y="573" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">event_id 유지 · 파일 큐</text>
+<text x="84" y="600" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">1.5초 배치 · 최대 100건</text>
+<rect x="471" y="504" width="338" height="145" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="471" y="524" width="5" height="105" rx="2" fill="#245fba"/>
+<text x="493" y="539" font-size="22" fill="#245fba" font-weight="700" text-anchor="start">Caddy · FastAPI</text>
+<text x="493" y="573" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">HTTPS POST /v1/events</text>
+<text x="493" y="600" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">인증 · 이벤트 입력 검증</text>
+<rect x="880" y="504" width="338" height="145" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="880" y="524" width="5" height="105" rx="2" fill="#245fba"/>
+<text x="902" y="539" font-size="22" fill="#245fba" font-weight="700" text-anchor="start">Kafka 발행 확인</text>
+<text x="902" y="573" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">학습 이벤트 발행</text>
+<text x="902" y="600" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">확인 후 HTTP 202 응답</text>
+<path d="M410 576 L459 576" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<path d="M819 576 L868 576" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<path d="M1049 660 V712 H231 V660" fill="none" stroke="#7a8da2" stroke-width="2.4" stroke-dasharray="7 6" marker-end="url(#arrow)"/>
+<text x="640" y="739" font-size="18" fill="#245fba" font-weight="400" text-anchor="middle">점선: 앱으로 돌아오는 접수 응답 · DB 저장 완료 응답과 구분</text>
+<rect x="40" y="778" width="1200" height="210" rx="18" fill="#f2edfa" stroke="#f2edfa" stroke-width="1.5"/>
+<text x="62" y="815" font-size="21" fill="#7050b2" font-weight="700" text-anchor="start">03  PERSISTENCE  ·  접수 이후 비동기 소비·저장</text>
+<rect x="62" y="842" width="338" height="111" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="62" y="862" width="5" height="71" rx="2" fill="#7050b2"/>
+<text x="84" y="877" font-size="22" fill="#7050b2" font-weight="700" text-anchor="start">Spark Streaming</text>
+<text x="84" y="911" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">체크포인트 · 시간 창 집계</text>
+<rect x="471" y="842" width="338" height="111" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="471" y="862" width="5" height="71" rx="2" fill="#7050b2"/>
+<text x="493" y="877" font-size="22" fill="#7050b2" font-weight="700" text-anchor="start">PrivateLink · TLS</text>
+<text x="493" y="911" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">계정 간 사설 DB 연결</text>
+<rect x="880" y="842" width="338" height="111" rx="18" fill="white" stroke="#dce5ee" stroke-width="1.5"/>
+<rect x="880" y="862" width="5" height="71" rx="2" fill="#7050b2"/>
+<text x="902" y="877" font-size="22" fill="#7050b2" font-weight="700" text-anchor="start">MongoDB 원장·집계</text>
+<text x="902" y="911" font-size="18" fill="#536b80" font-weight="400" text-anchor="start">event_id 기반 이벤트 추적</text>
+<path d="M410 899 L459 899" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<path d="M819 899 L868 899" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<path d="M1225 579 H1233 V760 H50 V899 H53" fill="none" stroke="#7a8da2" stroke-width="2.4" marker-end="url(#arrow)"/>
+<text x="48" y="1035" font-size="16" fill="#536b80" font-weight="400" text-anchor="start">생성 → HTTP 202: 1.53~1.59초 / 제공된 iPhone 이벤트 8건 · Kafka → DB 저장 지연은 별도 측정 필요</text>
+</g>
+</svg>

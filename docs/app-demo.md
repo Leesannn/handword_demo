@@ -41,24 +41,15 @@ iPhone 앱 담당자 제공 화면·기술 설명·전송 기록의 편집본. U
 
 `confirmed`·`corrected`는 화면 설명용 표현. 실제 전송 필드는 `was_corrected=false/true`. 모든 화면 전환을 이벤트로 세지 않으며, `retry`와 함께 발생한 `practice_attempt`를 별도 연습 두 번으로 계산하지 않도록 이벤트 유형별 집계 구분.
 
+## 화면 이벤트 흐름
+
+[![학습 화면과 이벤트 대응](../assets/diagrams/app-learning-events.png)](../assets/diagrams/app-learning-events.svg)
+
 ## 단말 처리와 서버 접수의 경계
 
-```mermaid
-flowchart TB
-  subgraph Mobile[단말 내부]
-    A[카메라] --> B[MediaPipe · 59점 × xyz]
-    B --> C[구간 선택 · 30 × 177 전처리]
-    C --> D[r0006 GRU · 단말 판정]
-    D --> E[결과 UI · 이벤트 생성]
-    E --> F[SyncCenter · 파일 Outbox]
-  end
-  F -->|HTTPS POST /v1/events| G[Caddy · FastAPI 검증]
-  G --> H[Kafka 발행 확인]
-  H -. HTTP 202 .-> F
-  H --> I[Spark Structured Streaming]
-  I --> J[PrivateLink · TLS]
-  J --> K[MongoDB 원장·집계]
-```
+[![단말 판정·서버 접수·DB 저장 경계](../assets/diagrams/app-event-delivery.png)](../assets/diagrams/app-event-delivery.svg)
+
+*이미지를 클릭하면 확대 가능한 SVG 원본 표시.*
 
 카메라 영상은 단말 내부에서 처리. 이 이벤트 흐름은 좌표 샘플 업로드와 별도 경로. 최신 앱 설명의 확신 기준은 0.6이며, 초기 실험의 임시 기준 0.85와 구분. 모델 정확도 60%라는 의미가 아니라 개별 출력 확률의 판정 기준.
 
